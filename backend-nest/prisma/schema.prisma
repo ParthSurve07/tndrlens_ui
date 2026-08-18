@@ -1,0 +1,170 @@
+// This is the Prisma schema for the Tender Management Platform
+// Target: PostgreSQL with pgvector extension
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Enums ──────────────────────────────────────────────────────────────
+
+enum UserRole {
+  admin
+  company
+  manager
+  employee
+}
+
+enum TenderStatus {
+  pending
+  analyzed
+  error
+  discovery
+  discovery_bookmarked
+}
+
+enum ClauseStatus {
+  PASS
+  FAIL
+  WARN
+}
+
+enum ChecklistStatus {
+  missing
+  uploaded
+  vault_matched
+}
+
+enum GoNoGoVerdict {
+  Go
+  NoGo
+  Cautious
+}
+
+// ── Models ─────────────────────────────────────────────────────────────
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(employee)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([username])
+  @@index([email])
+  @@map("users")
+}
+
+model CompanyProfile {
+  id                      Int    @id @default(autoincrement())
+  companyName             String @unique
+  turnover                Float  @default(0.0)   // in Crores
+  experienceYears         Int    @default(0)
+  similarProjectsCompleted Int   @default(0)
+  maxProjectValue         Float  @default(0.0)   // in Crores
+  certifications          String @default("")    // comma-separated
+  equipment               String @default("")    // comma-separated
+  manpowerCount           Int    @default(0)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  @@map("company_profiles")
+}
+
+model Tender {
+  id                  Int           @id @default(autoincrement())
+  title               String
+  organization        String        @default("")
+  value               Float         @default(0.0)  // in Crores
+  emd                 Float         @default(0.0)  // in Lakhs
+  submissionDeadline  String        @default("")
+  summary             String        @default("")
+  filePath            String        @default("")   // MinIO object key
+  status              TenderStatus  @default(pending)
+  isBookmarked        Boolean       @default(false)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  // Risk Profile (0.0 to 100.0)
+  overallRiskScore    Float         @default(0.0)
+  financialRisk       Float         @default(0.0)
+  technicalRisk       Float         @default(0.0)
+  complianceRisk      Float         @default(0.0)
+  documentationRisk   Float         @default(0.0)
+  confidenceScore     Float         @default(0.0)
+
+  // Suitability & Go/No-Go
+  suitabilityScore    Float         @default(0.0)
+  profitabilityRating Float         @default(0.0)
+  competitionRating   Float         @default(0.0)
+  difficultyRating    Float         @default(0.0)
+  distanceRating      Float         @default(0.0)
+  bidReadinessScore   Float         @default(0.0)
+  goNoGoVerdict       String        @default("Go")
+  goNoGoReason        String        @default("")
+  actionPlanJson      String        @default("[]")
+
+  // Contradictions & Pre-Bid Questions
+  contradictionsJson  String        @default("[]")
+  preBidQuestionsJson String        @default("[]")
+
+  // Relations
+  clauses      TenderClause[]
+  amendments   TenderAmendment[]
+  checklist    DocumentChecklist[]
+
+  @@index([title])
+  @@index([status])
+  @@map("tenders")
+}
+
+model TenderClause {
+  id            Int          @id @default(autoincrement())
+  tenderId      Int
+  category      String                        // financial, experience, technical, documentation
+  clauseText    String
+  requiredValue String       @default("")
+  userValue     String       @default("")
+  status        ClauseStatus @default(WARN)
+  explanation   String       @default("")
+  confidence    Float        @default(1.0)
+
+  tender Tender @relation(fields: [tenderId], references: [id], onDelete: Cascade)
+
+  @@index([tenderId])
+  @@map("tender_clauses")
+}
+
+model TenderAmendment {
+  id             Int      @id @default(autoincrement())
+  tenderId       Int
+  title          String
+  filePath       String   @default("")
+  changesSummary String   @default("")
+  dateUploaded   DateTime @default(now())
+
+  tender Tender @relation(fields: [tenderId], references: [id], onDelete: Cascade)
+
+  @@index([tenderId])
+  @@map("tender_amendments")
+}
+
+model DocumentChecklist {
+  id               Int             @id @default(autoincrement())
+  tenderId         Int
+  documentName     String
+  requiredByDate   String          @default("")
+  status           ChecklistStatus @default(missing)
+  matchingVaultDoc String          @default("")
+
+  tender Tender @relation(fields: [tenderId], references: [id], onDelete: Cascade)
+
+  @@index([tenderId])
+  @@map("document_checklists")
+}

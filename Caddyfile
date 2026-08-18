@@ -1,0 +1,27 @@
+# Tender Management Platform — Caddy Reverse Proxy
+# Routes: / → Next.js | /api/* → NestJS | /ai/* → Python AI Service
+
+localhost {
+    # Next.js frontend
+    handle / {
+        reverse_proxy frontend:3000
+    }
+
+    handle /* {
+        reverse_proxy frontend:3000
+    }
+
+    # NestJS API backend (WebSockets included)
+    handle /api/* {
+        reverse_proxy backend:3001
+    }
+
+    handle /socket.io/* {
+        reverse_proxy backend:3001
+    }
+
+    # Python AI microservice (internal, proxied by NestJS)
+    handle /ai-internal/* {
+        reverse_proxy ai-service:8001
+    }
+}

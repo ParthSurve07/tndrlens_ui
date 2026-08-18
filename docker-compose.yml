@@ -1,0 +1,162 @@
+services:
+  # ── PostgreSQL with pgvector extension ─────────────────────────
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: tender_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tender_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tender_secret_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-tender_management}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tender_user} -d ${POSTGRES_DB:-tender_management}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis ────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: tender_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── MinIO (S3-compatible object storage) ─────────────────────────
+  minio:
+    image: minio/minio:latest
+    container_name: tender_minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-tender_minio_access}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-tender_minio_secret}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── ClamAV Antivirus ─────────────────────────────────────────────
+  clamav:
+    image: clamav/clamav:stable
+    container_name: tender_clamav
+    restart: unless-stopped
+    ports:
+      - "3310:3310"
+    volumes:
+      - clamav_data:/var/lib/clamav
+    healthcheck:
+      test: ["CMD", "clamdcheck"]
+      interval: 60s
+      timeout: 30s
+      retries: 3
+
+  # ── NestJS Backend ───────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend-nest
+      dockerfile: Dockerfile
+    container_name: tender_backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT:-minio}
+      MINIO_PORT: ${MINIO_PORT:-9000}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-tender_minio_access}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-tender_minio_secret}
+      CLAMAV_HOST: ${CLAMAV_HOST:-clamav}
+      AI_SERVICE_URL: ${AI_SERVICE_URL:-http://ai-service:8001}
+      JWT_SECRET: ${JWT_SECRET}
+      NODE_ENV: ${NODE_ENV:-development}
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    volumes:
+      - ./backend-nest:/app
+      - /app/node_modules
+
+  # ── Python AI / Document Microservice ───────────────────────────
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: tender_ai
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - "8001:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./ai-service:/app
+      - ai_uploads:/app/uploads
+
+  # ── Next.js Frontend ─────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend-next
+      dockerfile: Dockerfile
+    container_name: tender_frontend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost/api}
+      NEXT_PUBLIC_WS_URL: ${NEXT_PUBLIC_WS_URL:-http://localhost}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  # ── Caddy Reverse Proxy ──────────────────────────────────────────
+  caddy:
+    image: caddy:2-alpine
+    container_name: tender_caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+      - backend
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+  clamav_data:
+  ai_uploads:
+  caddy_data:
+  caddy_config:
