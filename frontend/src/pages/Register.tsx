@@ -1,20 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { FileText, Lock, User, Mail, Shield, AlertCircle, CheckCircle } from 'lucide-react';
 
 interface RegisterProps {
   onRegisterSuccess: () => void;
   onGoToLogin: () => void;
+  inviteToken?: string;
 }
 
-export const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onGoToLogin }) => {
+export const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onGoToLogin, inviteToken }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('company'); // Default to company profile manager
+  const [role, setRole] = useState(inviteToken ? 'employee' : 'company');
+  const [inviteStatus, setInviteStatus] = useState<'loading' | 'pending' | 'expired' | 'accepted' | 'invalid'>(inviteToken ? 'loading' : 'pending');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!inviteToken) return;
+    api.getTeamInvitation(inviteToken)
+      .then((invitation) => {
+        setEmail(invitation.email);
+        setInviteStatus(invitation.status);
+        setRole('employee');
+      })
+      .catch((err: Error) => {
+        setInviteStatus('invalid');
+        setError(err.message);
+      });
+  }, [inviteToken]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,8 +43,18 @@ export const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onGoToLog
     setError('');
     setSuccess('');
     try {
-      await api.register(username, email, password, role);
-      setSuccess('Account created successfully! Redirecting...');
+      if (inviteToken) {
+        if (inviteStatus !== 'pending') {
+          setError('This invitation is no longer active. Ask your teammate to send a new link.');
+          return;
+        }
+        await api.acceptTeamInvitation(inviteToken, username, password);
+        window.history.replaceState({}, '', window.location.pathname);
+        setSuccess('Invitation accepted. Your account is ready — redirecting to sign in…');
+      } else {
+        await api.register(username, email, password, role);
+        setSuccess('Account created successfully! Redirecting...');
+      }
       setTimeout(() => {
         onRegisterSuccess();
       }, 1500);
@@ -49,8 +75,8 @@ export const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onGoToLog
           <div className="bg-indigo-600 text-white p-3 rounded-2xl flex items-center justify-center">
             <FileText size={24} />
           </div>
-          <h2 className="text-xl font-bold mt-4 text-slate-100">Create Account</h2>
-          <p className="text-xs text-slate-400 mt-1">Join the bid decision-support platform</p>
+          <h2 className="text-xl font-bold mt-4 text-slate-100">{inviteToken ? 'Join your team' : 'Create Account'}</h2>
+          <p className="text-xs text-slate-400 mt-1">{inviteToken ? 'Create your account to accept this team invitation.' : 'Join the bid decision-support platform'}</p>
         </div>
 
         {error && (
@@ -65,6 +91,18 @@ export const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onGoToLog
             <CheckCircle size={16} className="shrink-0" />
             <span>{success}</span>
           </div>
+        )}
+
+        {inviteToken && inviteStatus !== 'pending' && inviteStatus !== 'loading' && !error && (
+          <div className="mb-5 rounded-xl border border-amber-500/20 bg-amber-500/10 p-3.5 text-xs text-amber-300">
+            {inviteStatus === 'accepted'
+              ? 'This invitation has already been used. Sign in if you already created your account.'
+              : 'This invitation has expired. Ask your teammate to send a new link.'}
+          </div>
+        )}
+
+        {inviteToken && inviteStatus === 'loading' && (
+          <p role="status" className="mb-5 text-center text-xs text-slate-400">Checking invitation…</p>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -90,6 +128,7 @@ export const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onGoToLog
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                readOnly={Boolean(inviteToken)}
                 placeholder="Enter email address"
                 className="w-full bg-slate-950/80 border border-slate-800 hover:border-slate-700 focus:border-indigo-500 rounded-xl py-3 pl-10 pr-4 text-sm text-slate-100 placeholder:text-slate-600 outline-none transition-colors duration-200"
               />
@@ -110,7 +149,7 @@ export const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onGoToLog
             </div>
           </div>
 
-          <div>
+          {!inviteToken && <div>
             <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wide">Select Platform Role</label>
             <div className="relative">
               <Shield className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
@@ -125,20 +164,22 @@ export const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onGoToLog
                 <option value="employee">Bid Reviewer / Employee</option>
               </select>
             </div>
-          </div>
+          </div>}
+
+          {inviteToken && <p className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-xs text-slate-400">Team role: Associate</p>}
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || (Boolean(inviteToken) && inviteStatus !== 'pending')}
             className="w-full bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl py-3.5 font-semibold text-sm transition-all duration-200 shadow-lg shadow-indigo-600/10 hover:shadow-indigo-600/20 active:scale-98 flex items-center justify-center gap-2 mt-6 disabled:opacity-50 disabled:pointer-events-none"
           >
-            {loading ? 'Creating account...' : 'Create Account'}
+            {loading ? 'Creating account...' : inviteToken ? 'Accept invitation' : 'Create Account'}
           </button>
         </form>
 
         <div className="mt-8 text-center text-xs text-slate-400">
           Already have an account?{' '}
-          <button onClick={onGoToLogin} className="text-indigo-400 font-semibold hover:underline">
+          <button onClick={() => { if (inviteToken) window.history.replaceState({}, '', window.location.pathname); onGoToLogin(); }} className="text-indigo-400 font-semibold hover:underline">
             Sign In Here
           </button>
         </div>

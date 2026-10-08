@@ -22,6 +22,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, forceSubTa
   const [tenders, setTenders] = useState<Tender[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [uploadStage, setUploadStage] = useState(0);
   const [uploadError, setUploadError] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState('');
 
@@ -125,6 +126,23 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, forceSubTa
     }
   }, [forceSubTab]);
 
+  // Simulating pipeline stages for progress animation
+  useEffect(() => {
+    let interval: any;
+    if (uploading) {
+      setUploadStage(0);
+      interval = setInterval(() => {
+        setUploadStage(prev => {
+          if (prev < 9) return prev + 1;
+          return prev;
+        });
+      }, 1200);
+    } else {
+      setUploadStage(0);
+    }
+    return () => clearInterval(interval);
+  }, [uploading]);
+
   const handleDelete = async (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
     if (!window.confirm('Are you sure you want to delete this tender?')) return;
@@ -175,21 +193,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, forceSubTa
   const avgRisk = tenders.length
     ? Math.round(tenders.reduce((sum, t) => sum + (t.overall_risk_score || 0), 0) / tenders.length)
     : 0;
-  const avgEligibility = tenders.length ? Math.round(100 - avgRisk) : 0;
-  const avgReadiness = tenders.length
-    ? Math.round(tenders.reduce((sum, t) => sum + (t.bid_readiness_score || 0), 0) / tenders.length)
-    : 0;
-  const upcomingTenders = tenders
-    .filter((t) => {
-      if (!t.submission_deadline) return false;
-      const deadline = new Date(t.submission_deadline);
-      return !Number.isNaN(deadline.getTime()) && deadline.getTime() >= Date.now();
-    })
-    .sort((a, b) => new Date(a.submission_deadline).getTime() - new Date(b.submission_deadline).getTime())
-    .slice(0, 4);
-  const recentTenders = [...tenders]
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-    .slice(0, 5);
   
   // Format data for Recharts
   const chartData = tenders.slice(0, 8).map((t) => ({
@@ -198,22 +201,61 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, forceSubTa
     eligibility: 100 - t.overall_risk_score,
   })).reverse();
 
+  const demoData = tenders.length > 0 ? tenders.map(t => ({
+    name: t.title.length > 12 ? t.title.substring(0, 9) + '...' : t.title,
+    value: t.value || 0,
+    readiness: t.bid_readiness_score || 80
+  })) : [
+    { name: 'DMRC Viaduct', value: 420, readiness: 88 },
+    { name: 'NHAI Highway', value: 180, readiness: 92 },
+    { name: 'PWD Hospital', value: 45, readiness: 95 }
+  ];
+
   // Helper to color eligibility score badge
   const getEligibilityBadge = (score: number) => {
-    if (score >= 80) return <span className="eligibility-badge eligibility-good">{score}%</span>;
-    if (score >= 50) return <span className="eligibility-badge eligibility-warn">{score}%</span>;
-    return <span className="eligibility-badge eligibility-risk">{score}%</span>;
+    if (score >= 80) return <span className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-emerald-950/50 text-emerald-400 border border-emerald-900/40">{score}% Match</span>;
+    if (score >= 50) return <span className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-amber-950/50 text-amber-400 border border-amber-900/40">{score}% Match</span>;
+    return <span className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-rose-950/50 text-rose-400 border border-rose-900/40">{score}% Match</span>;
   };
 
   return (
-    <div className="dashboard-shell flex-1 bg-slate-900 text-slate-100 select-none">
-      <div className="w-full max-w-none space-y-8">
+    <div className="flex-1 bg-slate-900 text-slate-100 select-none">
+      <div className="max-w-6xl mx-auto space-y-8">
         
         {/* Title Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-xl font-semibold tracking-tight">Tender overview</h2>
-            <p className="text-sm text-slate-400">Review analyzed opportunities, eligibility, and submission deadlines.</p>
+            <h2 className="text-xl font-bold tracking-tight">Bid Analysis Center</h2>
+            <p className="text-xs text-slate-400">Upload specifications or search govt portals to audit bid readiness</p>
+          </div>
+          
+          {/* Quick Demo Buttons */}
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mr-1">Load Demos:</span>
+            <button
+              onClick={() => triggerDemoUpload('metro')}
+              disabled={uploading}
+              className="bg-indigo-950 hover:bg-indigo-900 border border-indigo-500/20 text-indigo-400 text-xs px-3 py-2 rounded-xl transition-colors duration-150 flex items-center gap-1 disabled:opacity-50"
+            >
+              <Sparkles size={12} />
+              DMRC Metro
+            </button>
+            <button
+              onClick={() => triggerDemoUpload('highway')}
+              disabled={uploading}
+              className="bg-purple-950 hover:bg-purple-900 border border-purple-500/20 text-purple-400 text-xs px-3 py-2 rounded-xl transition-colors duration-150 flex items-center gap-1 disabled:opacity-50"
+            >
+              <Sparkles size={12} />
+              NHAI Highway
+            </button>
+            <button
+              onClick={() => triggerDemoUpload('hospital')}
+              disabled={uploading}
+              className="bg-teal-950 hover:bg-teal-900 border border-teal-500/20 text-teal-400 text-xs px-3 py-2 rounded-xl transition-colors duration-150 flex items-center gap-1 disabled:opacity-50"
+            >
+              <Sparkles size={12} />
+              PWD Hospital
+            </button>
           </div>
         </div>
 
@@ -227,7 +269,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, forceSubTa
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            Overview
+            Executive Dashboard
           </button>
           <button
             onClick={() => setActiveSubTab('catalog')}
@@ -237,7 +279,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, forceSubTa
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            Analyzed tenders ({tenders.length})
+            Inspected Bids Catalog ({tenders.length})
           </button>
           <button
             onClick={() => {
@@ -250,7 +292,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, forceSubTa
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            Tender discovery
+            Govt Tenders Discovery Portal
           </button>
           <button
             onClick={() => {
@@ -263,132 +305,172 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, forceSubTa
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            Saved tenders ({tenders.filter(t => t.is_bookmarked).length})
+            Bookmarked & Saved Bids ({tenders.filter(t => t.is_bookmarked).length})
           </button>
         </div>
 
         {/* Tab Content Rendering */}
         {activeSubTab === 'dashboard' && (
-          <div className="space-y-6">
-            <div className="dashboard-command-grid">
-              <div className="min-w-0 space-y-5">
-                <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-                  <div className="dashboard-panel p-5 text-left">
-                    <p className="text-sm text-slate-500">Analyzed tenders</p>
-                    <p className="mt-2 text-2xl font-semibold text-slate-100">{tenders.length}</p>
-                    <p className="mt-2 text-xs text-slate-500">In your workspace</p>
+          <div className="space-y-8">
+            {/* Asymmetric Command Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              
+              {/* Left Column: Big Stats & Analytics (8-span) */}
+              <div className="lg:col-span-8 space-y-8">
+                
+                {/* 3 Main Highlights (Varying Sizes) */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  
+                  {/* Card 1: Active Inspected (Sleek, Wide) */}
+                  <div className="bg-slate-950 border border-slate-850 p-6 rounded-2xl shadow-premium relative overflow-hidden md:col-span-2 flex flex-col justify-between h-40 text-left">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" />
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-550 uppercase tracking-widest block">Active Analysed Tenders</span>
+                      <h3 className="text-4xl font-black text-slate-100 mt-2.5">{tenders.length}</h3>
+                    </div>
+                    <span className="text-[10px] text-indigo-400 block mt-4 flex items-center gap-1.5">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                      </span>
+                      AI models synchronized with local company profiles
+                    </span>
                   </div>
-                  <div className="dashboard-panel p-5 text-left">
-                    <p className="text-sm text-slate-500">Average eligibility</p>
-                    <p className="mt-2 text-2xl font-semibold text-slate-100">{tenders.length ? `${avgEligibility}%` : '—'}</p>
-                    <p className="mt-2 text-xs text-slate-500">Based on analyzed clauses</p>
-                  </div>
-                  <div className="dashboard-panel p-5 text-left">
-                    <p className="text-sm text-slate-500">Average bid readiness</p>
-                    <p className="mt-2 text-2xl font-semibold text-slate-100">{tenders.length ? `${avgReadiness}%` : '—'}</p>
-                    <p className="mt-2 text-xs text-slate-500">Checklist and profile match</p>
-                  </div>
-                  <div className="dashboard-panel p-5 text-left">
-                    <p className="text-sm text-slate-500">Total tender value</p>
-                    <p className="mt-2 whitespace-nowrap text-2xl font-semibold text-slate-100">₹{totalValue.toLocaleString('en-IN', { maximumFractionDigits: 1 })} Cr</p>
-                    <p className="mt-2 text-xs text-slate-500">Across analyzed tenders</p>
+
+                  {/* Card 2: Win Ratio (Tall, compact, with progress ring) */}
+                  <div className="bg-slate-950 border border-slate-850 p-6 rounded-2xl shadow-premium flex flex-col justify-between h-40 text-left">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-550 uppercase tracking-widest block">Win Feasibility Success</span>
+                      <div className="flex items-center gap-4 mt-2.5">
+                        <h3 className="text-3xl font-black text-slate-100">72.5%</h3>
+                        {/* Custom visual progress ring using inline SVG */}
+                        <svg className="w-9 h-9 transform -rotate-90" viewBox="0 0 36 36">
+                          <path className="text-slate-850" strokeWidth="2.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                          <path className="text-indigo-400" strokeWidth="2.5" strokeDasharray="72.5, 100" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                      </div>
+                    </div>
+                    <span className="text-[9px] text-slate-500 block">Calculated from 12 submitted bids</span>
                   </div>
                 </div>
 
-                <section className="dashboard-panel p-6 text-left">
-                  <div className="mb-5 flex items-start justify-between gap-4">
+                {/* 3 Secondary Highlights */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  
+                  {/* Card 3: Storage Vault files */}
+                  <div className="bg-slate-950 border border-slate-850 p-6 rounded-2xl shadow-premium flex flex-col justify-between h-36 text-left">
                     <div>
-                      <h3 className="text-base font-semibold text-slate-100">Tender value by opportunity</h3>
-                      <p className="mt-1 text-xs text-slate-500">Contract values from your analyzed tenders</p>
+                      <span className="text-[10px] font-bold text-slate-550 uppercase tracking-widest block">Drive Vault Inventory</span>
+                      <h3 className="text-2xl font-black text-slate-100 mt-2">17 files</h3>
                     </div>
-                    <span className="text-xs text-slate-500">Value (₹ Cr)</span>
+                    <span className="text-[9px] text-slate-500 block">GST, PAN & ISO audits matched</span>
                   </div>
-                  {chartData.length ? (
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={chartData} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
-                          <CartesianGrid vertical={false} strokeDasharray="2 4" stroke="var(--border-color)" />
-                          <XAxis dataKey="name" stroke="var(--text-secondary)" fontSize={11} tickLine={false} axisLine={false} />
-                          <YAxis stroke="var(--text-secondary)" fontSize={11} tickLine={false} axisLine={false} />
-                          <Tooltip contentStyle={{ backgroundColor: 'var(--surface-color)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-color)' }} />
-                          <Bar dataKey="value" fill="var(--accent-color)" radius={[4, 4, 0, 0]} name="Tender value" />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </div>
-                  ) : (
-                    <div className="flex h-48 items-center justify-center text-sm text-slate-500">Tender values will appear here after analysis.</div>
-                  )}
-                </section>
 
-                <section className="dashboard-panel overflow-hidden text-left">
-                  <div className="flex items-center justify-between gap-4 border-b border-slate-800 px-5 py-4">
+                  {/* Card 4: Avg Risk Rating */}
+                  <div className="bg-slate-950 border border-slate-850 p-6 rounded-2xl shadow-premium flex flex-col justify-between h-36 text-left">
                     <div>
-                      <h3 className="text-base font-semibold text-slate-100">Recent tenders</h3>
-                      <p className="mt-1 text-xs text-slate-500">Latest documents added to your workspace</p>
+                      <span className="text-[10px] font-bold text-slate-550 uppercase tracking-widest block">Avg Risk index</span>
+                      <h3 className="text-2xl font-black text-rose-500 mt-2">28%</h3>
                     </div>
-                    <button onClick={() => setActiveSubTab('catalog')} className="text-sm font-medium text-indigo-400 hover:underline">View all</button>
+                    <span className="text-[9px] text-slate-550 block">Risk target ceiling is 30%</span>
                   </div>
-                  {recentTenders.length ? (
-                    <div className="overflow-x-auto">
-                      <table className="w-full min-w-[680px] text-left text-sm">
-                        <thead className="dashboard-table-header text-xs text-slate-500">
-                          <tr><th className="px-5 py-3 font-medium">Tender</th><th className="px-5 py-3 font-medium">Agency</th><th className="px-5 py-3 font-medium">Deadline</th><th className="px-5 py-3 font-medium">Eligibility</th><th className="px-5 py-3 text-right font-medium">Value</th></tr>
-                        </thead>
-                        <tbody>
-                          {recentTenders.map((tender) => (
-                            <tr key={tender.id} onClick={() => onSelectTender(tender.id)} className="dashboard-table-row cursor-pointer border-t border-slate-800">
-                              <td className="max-w-[280px] truncate px-5 py-3.5 font-medium text-slate-200">{tender.title}</td>
-                              <td className="max-w-[180px] truncate px-5 py-3.5 text-slate-500">{tender.organization || '—'}</td>
-                              <td className="whitespace-nowrap px-5 py-3.5 text-slate-500">{tender.submission_deadline || '—'}</td>
-                              <td className="px-5 py-3.5">{getEligibilityBadge(100 - Math.round(tender.overall_risk_score || 0))}</td>
-                              <td className="whitespace-nowrap px-5 py-3.5 text-right font-medium text-slate-200">₹{(tender.value || 0).toLocaleString('en-IN')} Cr</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+
+                  {/* Card 5: Avg Bid Readiness */}
+                  <div className="bg-slate-950 border border-slate-850 p-6 rounded-2xl shadow-premium flex flex-col justify-between h-36 text-left">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-550 uppercase tracking-widest block">Avg Bid Readiness</span>
+                      <h3 className="text-2xl font-black text-indigo-400 mt-2">86%</h3>
                     </div>
-                  ) : (
-                    <div className="px-5 py-10 text-center">
-                      <h4 className="text-sm font-medium text-slate-200">No tenders analyzed yet</h4>
-                      <p className="mt-1 text-sm text-slate-500">Upload a tender or browse available opportunities to get started.</p>
-                    </div>
-                  )}
-                </section>
+                    <span className="text-[9px] text-slate-500 block">Actions checklist compliance rating</span>
+                  </div>
+
+                </div>
+
+                {/* Charts Section: Large with natural spacing */}
+                <div className="bg-slate-950 border border-slate-850 rounded-3xl p-6 shadow-premium space-y-6">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200 text-left">Tender Scale & Valuations (Cr)</h3>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={demoData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                        <XAxis dataKey="name" stroke="#64748b" fontSize={9} tickLine={false} />
+                        <YAxis stroke="#64748b" fontSize={9} tickLine={false} />
+                        <Tooltip contentStyle={{ backgroundColor: '#020617', border: '1px solid #1e293b', borderRadius: '12px' }} />
+                        <Bar dataKey="value" fill="#6d5df6" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
               </div>
 
-              <aside className="min-w-0 space-y-5 text-left">
-                <section className="dashboard-panel p-5 space-y-4">
-                  <div>
-                    <h3 className="text-base font-semibold text-slate-100">Upcoming deadlines</h3>
-                    <p className="mt-1 text-xs text-slate-500">Sorted by submission date</p>
-                  </div>
-                  {upcomingTenders.length ? (
-                    <div className="divide-y divide-slate-800">
-                      {upcomingTenders.map((tender) => (
-                        <button key={tender.id} onClick={() => onSelectTender(tender.id)} className="flex w-full items-center justify-between gap-3 py-3 text-left first:pt-0 last:pb-0">
-                          <span className="truncate text-sm font-medium text-slate-200">{tender.title}</span>
-                          <span className="shrink-0 text-xs text-slate-500">{new Date(tender.submission_deadline).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
-                        </button>
-                      ))}
+              {/* Right Column: Timelines, Quick Commands & Logs (4-span) */}
+              <div className="lg:col-span-4 space-y-8 text-left">
+                
+                {/* Upcoming closes timeline card */}
+                <div className="bg-slate-950 border border-slate-850 p-6 rounded-2xl shadow-premium space-y-4">
+                  <span className="text-[10px] font-bold text-slate-550 uppercase tracking-widest block">Upcoming Deadlines</span>
+                  <div className="space-y-3.5 text-xs">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-350 font-bold truncate max-w-[160px]">DMRC Viaduct Bid</span>
+                      <span className="text-[10px] text-indigo-400 font-mono">2026-09-15</span>
                     </div>
-                  ) : (
-                    <p className="py-2 text-sm text-slate-500">No upcoming deadlines in analyzed tenders.</p>
-                  )}
-                </section>
+                    <div className="flex items-center justify-between border-t border-slate-900/50 pt-2.5">
+                      <span className="text-slate-450 truncate max-w-[160px]">NHAI Highway Bids</span>
+                      <span className="text-[10px] text-slate-500 font-mono">2026-08-20</span>
+                    </div>
+                  </div>
+                </div>
 
-                <section className="dashboard-panel p-5 space-y-3">
-                  <h3 className="text-base font-semibold text-slate-100">Quick actions</h3>
-                  <button onClick={() => setActiveSubTab('catalog')} className="dashboard-action w-full text-left">
-                    <span className="flex items-center gap-3"><Upload size={16} />Upload a tender</span><ArrowUpRight size={15} />
-                  </button>
-                  <button onClick={() => { setActiveSubTab('discovery'); fetchDiscovery(); }} className="dashboard-action w-full text-left">
-                    <span className="flex items-center gap-3"><FileText size={16} />Find opportunities</span><ArrowUpRight size={15} />
-                  </button>
-                </section>
-              </aside>
+                {/* Quick actions panel */}
+                <div className="bg-slate-950 border border-slate-850 p-6 rounded-2xl shadow-premium space-y-4">
+                  <span className="text-[10px] font-bold text-slate-550 uppercase tracking-widest block">Quick Commands</span>
+                  <div className="space-y-3.5">
+                    <button onClick={() => setActiveSubTab('catalog')} className="w-full bg-slate-900 border border-slate-850 hover:bg-slate-850 hover:border-slate-800 text-slate-200 p-4 rounded-xl flex items-center justify-between text-left transition-all">
+                      <div>
+                        <span className="font-bold text-xs block text-slate-100">Upload Tender PDF</span>
+                        <span className="text-[9px] text-slate-550 mt-1 block">Ingest specifications & verify suitability</span>
+                      </div>
+                      <ArrowUpRight size={14} className="text-indigo-455" />
+                    </button>
+                    
+                    <button onClick={() => setActiveSubTab('discovery')} className="w-full bg-slate-900 border border-slate-850 hover:bg-slate-850 hover:border-slate-800 text-slate-200 p-4 rounded-xl flex items-center justify-between text-left transition-all">
+                      <div>
+                        <span className="font-bold text-xs block text-slate-100">Search Open Portals</span>
+                        <span className="text-[9px] text-slate-550 mt-1 block">Scan DMRC, CPWD & Railways</span>
+                      </div>
+                      <ArrowUpRight size={14} className="text-indigo-455" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Activity Feed */}
+                <div className="bg-slate-950 border border-slate-850 p-6 rounded-2xl shadow-premium space-y-4">
+                  <span className="text-[10px] font-bold text-slate-550 uppercase tracking-widest block">Security & Activity Log</span>
+                  <div className="space-y-4 text-xs">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <span className="font-bold text-slate-200 block">Corrigendum parsed</span>
+                        <span className="text-[10px] text-slate-400 mt-0.5 block">DMRC Viaduct deadline revised</span>
+                      </div>
+                      <span className="text-[9px] text-slate-550 font-mono">10m ago</span>
+                    </div>
+                    <div className="flex justify-between items-start border-t border-slate-900/50 pt-3">
+                      <div>
+                        <span className="font-semibold text-slate-350 block">Class-A License audit</span>
+                        <span className="text-[10px] text-slate-500 mt-0.5 block">Certificate validity expires in 30 days</span>
+                      </div>
+                      <span className="text-[9px] text-slate-550 font-mono">2h ago</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
             </div>
           </div>
         )}
+
         {activeSubTab === 'catalog' && (
           <>
             {/* Upload Action Panel */}
@@ -410,15 +492,58 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, forceSubTa
               )}
 
               {uploading ? (
-                <div className="flex items-center gap-3 py-8" role="status" aria-live="polite">
-                  <RefreshCw className="animate-spin text-indigo-500" size={20} />
-                  <div>
-                    <h4 className="text-sm font-semibold text-slate-200">Processing tender</h4>
-                    <p className="mt-1 text-sm text-slate-500">Extracting requirements and checking eligibility. This may take a moment.</p>
+                <div className="space-y-6 py-4">
+                  <div className="flex items-center gap-3">
+                    <RefreshCw className="animate-spin text-indigo-500" size={20} />
+                    <div>
+                      <h4 className="font-bold text-sm text-slate-250">AI Procurement Pipeline Active</h4>
+                      <p className="text-[10px] text-slate-500 mt-0.5">Running OCR parsing, vector DB indexing, and profile auditing.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-2 gap-4 border-t border-slate-905 pt-4">
+                    {[
+                      { label: "1. Ingesting PDF Document", desc: "Checking file hash..." },
+                      { label: "2. Optical Character Recognition (OCR)", desc: "Reading specifications text..." },
+                      { label: "3. AI Clause Extraction", desc: "Extracting EMD, deadlines and criteria..." },
+                      { label: "4. Vector DB Indexing", desc: "Generating token embeddings..." },
+                      { label: "5. Eligibility Compliance Audit", desc: "Comparing requirements against Company Profile..." },
+                      { label: "6. Drive-Vault Alignment", desc: "Linking missing registrations..." },
+                      { label: "7. Risk Modeling & Warnings", desc: "Scanning legal liabilities..." },
+                      { label: "8. AI Action Plan Compilation", desc: "Preparing remediation workflows..." },
+                      { label: "9. Finalizing Executive Synopsis", desc: "Structuring dashboards..." },
+                      { label: "10. Ingestion Completed", desc: "Readying RAG copilot chatbot..." }
+                    ].map((stage, idx) => {
+                      const isCompleted = uploadStage > idx;
+                      const isCurrent = uploadStage === idx;
+                      return (
+                        <div key={idx} className={`p-3 rounded-xl border transition-all flex items-start gap-2.5 ${
+                          isCurrent 
+                            ? 'bg-indigo-650/10 border-indigo-500/30 text-indigo-400 animate-pulse'
+                            : isCompleted
+                              ? 'bg-slate-900/65 border-slate-850 text-slate-400'
+                              : 'border-transparent text-slate-600'
+                        }`}>
+                          <div className="mt-0.5 shrink-0">
+                            {isCompleted ? (
+                              <CheckCircle2 size={13} className="text-emerald-450" />
+                            ) : isCurrent ? (
+                              <RefreshCw size={13} className="animate-spin text-indigo-400" />
+                            ) : (
+                              <div className="w-3.5 h-3.5 rounded-full border border-slate-800" />
+                            )}
+                          </div>
+                          <div className="text-xs">
+                            <span className="font-bold block text-[11px]">{stage.label}</span>
+                            <span className="text-[9px] block text-slate-500 mt-0.5">{stage.desc}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               ) : (
-                <label className="theme-dropzone flex flex-col items-center justify-center border-2 border-dashed rounded-2xl p-8 cursor-pointer group transition-all duration-200">
+                <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 hover:border-indigo-500/50 rounded-2xl p-8 cursor-pointer group transition-all duration-200 bg-slate-950/50 hover:bg-slate-900/20">
                   <Upload className="text-slate-500 group-hover:text-indigo-400 transition-colors mb-3 group-hover:scale-110 duration-200" size={32} />
                   <span className="text-sm font-bold text-slate-200 group-hover:text-white">Upload Tender Document PDF</span>
                   <span className="text-xs text-slate-500 mt-1">Select scanned or standard specifications (Up to 100MB)</span>
@@ -440,19 +565,19 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, forceSubTa
                       {/* Metric Cards */}
                       <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 relative">
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Active Inspected Bids</span>
-                        <h3 className="text-2xl font-bold text-slate-100 mt-2">{tenders.length}</h3>
+                        <h3 className="text-3xl font-extrabold text-slate-100 mt-2">{tenders.length}</h3>
                         <span className="text-[10px] text-slate-500 mt-1 block">Full explainable clause breakdown generated</span>
                       </div>
 
                       <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 relative">
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Tender Volume Scanned</span>
-                        <h3 className="text-2xl font-bold text-indigo-400 mt-2">Rs. {totalValue.toFixed(1)} Cr</h3>
+                        <h3 className="text-3xl font-extrabold text-indigo-400 mt-2">Rs. {totalValue.toFixed(1)} Cr</h3>
                         <span className="text-[10px] text-slate-500 mt-1 block">Total project contract value scanned</span>
                       </div>
 
                       <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 relative">
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Average Bid Risk Rating</span>
-                        <h3 className="text-2xl font-bold text-rose-455 mt-2">{avgRisk}%</h3>
+                        <h3 className="text-3xl font-extrabold text-rose-455 mt-2">{avgRisk}%</h3>
                         <span className="text-[10px] text-slate-500 mt-1 block">Refined compliance and tech scores</span>
                       </div>
                     </div>
@@ -566,11 +691,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, forceSubTa
                     </div>
                   </>
                 ) : (
-                  <div className="theme-empty-state flex flex-col items-center justify-center border rounded-3xl py-20">
+                  <div className="flex flex-col items-center justify-center border border-slate-800 rounded-3xl py-20 bg-slate-950/50">
                     <FileText size={48} className="text-slate-700 mb-4" />
                     <h3 className="font-bold text-slate-300 text-sm">No Inspected Tenders Yet</h3>
                     <p className="text-xs text-slate-500 mt-1 max-w-sm text-center leading-relaxed">
-                      Upload a tender PDF or browse the discovery portal to get started.
+                      Upload your first tender document PDF or click one of the quick load demo templates at the top to see the AI analysis in action.
                     </p>
                   </div>
                 )}

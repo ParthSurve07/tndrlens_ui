@@ -77,7 +77,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
   // Accessibility contrast checker based on current theme setting
   const getAccessibilityScore = () => {
-    const isLight = preset === 'light-professional';
+    const isLight = preset.includes('white') || preset.includes('azure') || preset.includes('emerald') || preset.includes('crimson');
     return {
       score: '98/100',
       ratio: isLight ? '8.4:1 contrast ratio' : '7.8:1 contrast ratio',
@@ -87,11 +87,10 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   };
 
   const access = getAccessibilityScore();
-  const activeTheme = THEME_PRESETS[preset] || THEME_PRESETS['dark-professional'];
 
   // Export format block generator
   const getExportString = () => {
-    const col = THEME_PRESETS[preset] || THEME_PRESETS['dark-professional'];
+    const col = THEME_PRESETS[preset] || THEME_PRESETS['executive-blue'];
     if (exportFormat === 'json') {
       return JSON.stringify({
         presetName: preset,
@@ -194,8 +193,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                     {Object.entries(THEME_PRESETS).map(([name, col]) => (
                       <div
                         key={name}
-                        onClick={() => { setPreset(name); setThemeMode(name); }}
-                        style={{ backgroundColor: col.card, borderColor: preset === name ? col.accent : col.border }}
+                        onClick={() => setPreset(name)}
                         className={`p-3 rounded-lg border text-left cursor-pointer transition-all flex items-center justify-between ${
                           preset === name ? 'border-[#6366F1] bg-[#6366F1]/5' : 'border-[#334155] bg-[#1E293B] hover:border-slate-500'
                         }`}
@@ -219,12 +217,17 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                   <label className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-wider block">Theme Modes</label>
                   <select
                     value={themeMode}
-                    onChange={(e) => { setThemeMode(e.target.value); setPreset(e.target.value); }}
+                    onChange={(e) => setThemeMode(e.target.value)}
                     className="w-full bg-[#1E293B] border border-[#334155] rounded-lg px-3 py-2 text-xs text-[#F8FAFC]"
                   >
-                    <option value="dark-professional">Dark Professional</option>
-                    <option value="light-professional">Light Professional</option>
-                    <option value="graphite-gray">Graphite Gray</option>
+                    <option value="dark-pro">Dark Professional (Charcoal Deep)</option>
+                    <option value="light-pro">Light Professional (Minimal Soft)</option>
+                    <option value="midnight-oled">Midnight OLED (OLED Black)</option>
+                    <option value="glassmorphism">Glassmorphism effects (Transparencies)</option>
+                    <option value="executive-blue">Executive Blue (Inspired by Stripe)</option>
+                    <option value="financial-terminal">Financial Terminal (Bloomberg Green)</option>
+                    <option value="minimal-white">Minimal White (Apple layout)</option>
+                    <option value="modern-purple">Modern Purple (Linear styling)</option>
                   </select>
                 </div>
 
@@ -285,8 +288,8 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                         <option value="Inter">Inter (Standard SaaS)</option>
                         <option value="SF Pro">SF Pro (Apple native)</option>
                         <option value="Roboto">Roboto (Google Clean)</option>
-                        <option value="IBM Plex Sans">IBM Plex Sans</option>
-                        <option value="System UI">System UI</option>
+                        <option value="IBM Plex Sans">IBM Plex Sans (Monospace feel)</option>
+                        <option value="Geist">Geist (Modern Vercel)</option>
                       </select>
                     </div>
 
@@ -446,30 +449,30 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 <span className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-wider block border-b border-[#334155] pb-2">Live Design Preview</span>
                 
                 {/* Simulated Header */}
-                <div className="border p-3 rounded-lg flex items-center justify-between" style={{ backgroundColor: activeTheme.surface, borderColor: activeTheme.border }}>
-                  <span className="font-bold text-[#F8FAFC] text-[10px]">Tndrlens</span>
+                <div className="bg-[#111827] border border-[#334155] p-3 rounded-lg flex items-center justify-between">
+                  <span className="font-bold text-[#F8FAFC] text-[10px]">TenderIntel Suite</span>
                   <span className="text-[8px] text-[#10B981] bg-[#10B981]/15 px-1.5 py-0.5 rounded border border-[#10B981]/25 uppercase font-mono">Sync active</span>
                 </div>
 
                 {/* Simulated Sidebar highlight */}
                 <div className="space-y-1">
-                  <div className="border p-2.5 rounded-lg flex items-center justify-between text-[10px] text-indigo-400" style={{ backgroundColor: activeTheme.card, borderColor: activeTheme.accent }}>
+                  <div className="bg-[#1E293B] border border-[#6366F1]/30 p-2.5 rounded-lg flex items-center justify-between text-[10px] text-indigo-400">
                     <span className="font-bold">Active Workspace Link</span>
                     <Layers size={11} />
                   </div>
                 </div>
 
                 {/* Simulated Card Valuation */}
-                <div className="border p-4 rounded-xl space-y-3" style={{ backgroundColor: activeTheme.card, borderColor: activeTheme.border }}>
+                <div className="bg-[#1E293B] border border-[#334155] p-4 rounded-xl space-y-3">
                   <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest block">Executive Bid Valuation</span>
                   <div className="flex justify-between items-center">
                     <h3 className="text-xl font-black text-[#F8FAFC] font-mono">72.4 Cr</h3>
-                    <button className="text-white font-bold text-[9px] px-2.5 py-1.5 rounded transition-all" style={{ backgroundColor: activeTheme.accent }}>Ingest Specifications</button>
+                    <button className="bg-[#6366F1] text-white font-bold text-[9px] px-2.5 py-1.5 rounded transition-all">Ingest Specifications</button>
                   </div>
                 </div>
 
                 {/* Accessibility ratings card */}
-                <div className="border p-4 rounded-xl space-y-2" style={{ backgroundColor: activeTheme.card, borderColor: activeTheme.border }}>
+                <div className="bg-[#1E293B] border border-[#334155] p-4 rounded-xl space-y-2">
                   <div className="flex justify-between items-center">
                     <span className="text-[9px] font-bold text-[#94A3B8] uppercase">Accessibility Score</span>
                     <span className={`text-[9px] font-black uppercase ${access.color}`}>{access.rating}</span>
@@ -670,7 +673,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
               <h3 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider">Billing Subscription Plan</h3>
               <div className="bg-[#1E293B] border border-[#334155] p-6 rounded-xl space-y-4 flex justify-between items-center">
                 <div>
-                  <h4 className="font-bold text-xs text-[#F8FAFC]">Enterprise Pro Plan</h4>
+                  <h4 className="font-bold text-xs text-[#F8FAFC]">TenderIntel Enterprise Pro Plan</h4>
                   <span className="text-[10px] text-[#94A3B8] mt-1 block">Valid for unlimited scans, includes 25 active team profiles</span>
                 </div>
                 <span className="text-xs font-bold text-[#10B981] bg-[#10B981]/15 px-3 py-1 rounded border border-[#10B981]/20 uppercase">Active</span>

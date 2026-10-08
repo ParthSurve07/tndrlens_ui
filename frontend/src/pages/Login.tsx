@@ -46,7 +46,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onGoToRegister, on
             <FileText size={24} />
           </button>
           <h2 className="text-xl font-bold mt-4 text-slate-100">Welcome Back</h2>
-          <p className="text-xs text-slate-400 mt-1">Sign in to your TenderIntel dashboard</p>
+          <p className="text-xs text-slate-400 mt-1">Sign in to your Tndrlens dashboard</p>
         </div>
 
         {error && (

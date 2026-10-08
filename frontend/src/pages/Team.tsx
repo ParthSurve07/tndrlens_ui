@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Users, UserPlus, MessageSquare, Send, CheckCircle2, Circle } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Users, UserPlus, MessageSquare, Send, CheckCircle2, Circle, Mail, Copy, X, Check } from 'lucide-react';
+import { api, type CreatedTeamInvitation, type TeamInvitation } from '../services/api';
 
 interface TeamMember {
   name: string;
@@ -23,6 +24,18 @@ interface Comment {
 }
 
 export const TeamCollaboration: React.FC = () => {
+  const [invitations, setInvitations] = useState<TeamInvitation[]>([]);
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [createdInvitation, setCreatedInvitation] = useState<CreatedTeamInvitation | null>(null);
+  const [inviteError, setInviteError] = useState('');
+  const [sendingInvite, setSendingInvite] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  useEffect(() => {
+    api.getTeamInvitations().then(setInvitations).catch(() => undefined);
+  }, []);
+
   const [tasks, setTasks] = useState<Task[]>([
     { id: 1, title: 'Verify Solvency Letters for DMRC Viaduct', assignee: 'Deepak (Manager)', status: 'in_progress', tenderTitle: 'Elevated Viaduct Line-9' },
     { id: 2, title: 'Upload expired ISO 9001 quality cert to vault', assignee: 'Aditi (Estimator)', status: 'completed', tenderTitle: 'Western Zone Track Renewals' },
@@ -37,6 +50,33 @@ export const TeamCollaboration: React.FC = () => {
   ]);
 
   const [newComment, setNewComment] = useState('');
+
+  const handleCreateInvite = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setInviteError('');
+    setSendingInvite(true);
+    try {
+      const invitation = await api.createTeamInvitation(inviteEmail.trim());
+      setCreatedInvitation(invitation);
+      setInvitations((current) => [invitation, ...current.filter((item) => item.email !== invitation.email)]);
+    } catch (err) {
+      setInviteError(err instanceof Error ? err.message : 'Could not create the invitation. Please try again.');
+    } finally {
+      setSendingInvite(false);
+    }
+  };
+
+  const handleCopyInvite = async () => {
+    if (!createdInvitation) return;
+    const inviteLink = `${window.location.origin}/?invite=${encodeURIComponent(createdInvitation.token)}`;
+    try {
+      await navigator.clipboard.writeText(inviteLink);
+      setCopiedLink(true);
+      setInviteError('');
+    } catch {
+      setInviteError('Copy is unavailable in this browser. Select the invitation link and copy it manually.');
+    }
+  };
 
   const members: TeamMember[] = [
     { name: 'Deepak Kumar', role: 'Head of Bid Proposals', avatar: 'DK', status: 'active' },
@@ -80,7 +120,7 @@ export const TeamCollaboration: React.FC = () => {
             <p className="text-xs text-[#94A3B8]">Coordinate bid checklists, safety assignments, and audit discussion feeds</p>
           </div>
         </div>
-        <button className="bg-[#6366F1] hover:bg-indigo-600 text-white rounded-lg px-4 py-2 text-xs font-bold transition-all flex items-center gap-1.5">
+        <button onClick={() => { setInviteOpen(true); setInviteEmail(''); setCreatedInvitation(null); setInviteError(''); setCopiedLink(false); }} className="bg-[#6366F1] hover:bg-indigo-600 text-white rounded-lg px-4 py-2.5 text-sm font-semibold transition-all flex items-center gap-1.5">
           <UserPlus size={13} />
           Invite Associate
         </button>
@@ -174,7 +214,7 @@ export const TeamCollaboration: React.FC = () => {
         {/* Right Column: Member rosters (1-span) */}
         <div className="space-y-6 text-left">
           <div className="bg-[#111827] border border-[#334155] rounded-xl p-6 space-y-4">
-            <span className="text-xs font-bold text-[#F8FAFC] uppercase tracking-wider block">Assigned Officers</span>
+            <span className="text-xs font-bold text-[#F8FAFC] uppercase tracking-wider block">Team associates</span>
             <div className="space-y-4">
               {members.map((member) => (
                 <div key={member.name} className="flex items-center justify-between text-xs">
@@ -198,11 +238,83 @@ export const TeamCollaboration: React.FC = () => {
                   </span>
                 </div>
               ))}
+              {invitations.map((invitation) => (
+                <div key={invitation.id} className="flex items-center justify-between gap-3 text-xs">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#334155] bg-slate-800 font-semibold uppercase text-indigo-400">
+                      {invitation.email.slice(0, 2)}
+                    </div>
+                    <div className="min-w-0">
+                      <span className="block truncate font-semibold text-[#F8FAFC]">{invitation.email}</span>
+                      <span className="mt-0.5 block text-[10px] text-slate-500">Team associate</span>
+                    </div>
+                  </div>
+                  <span className={`shrink-0 rounded-full border px-2 py-1 text-[9px] font-semibold uppercase ${
+                    invitation.status === 'accepted'
+                      ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-400'
+                      : invitation.status === 'expired'
+                        ? 'border-[#334155] bg-[#0F172A] text-slate-500'
+                        : 'border-amber-500/20 bg-amber-500/10 text-amber-400'
+                  }`}>
+                    {invitation.status === 'pending' ? 'Invite pending' : invitation.status}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
       </div>
+
+      {inviteOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/55 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget) setInviteOpen(false); }}>
+          <section role="dialog" aria-modal="true" aria-labelledby="invite-title" className="w-full max-w-lg rounded-2xl border border-[#334155] bg-[#111827] p-6 shadow-2xl">
+            <div className="mb-5 flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="rounded-xl border border-[#6366F1]/20 bg-[#6366F1]/10 p-2 text-[#6366F1]"><Mail size={18} /></div>
+                <div>
+                  <h3 id="invite-title" className="text-base font-semibold text-[#F8FAFC]">Invite a team associate</h3>
+                  <p className="mt-1 text-xs text-[#94A3B8]">Create a secure link to share with your teammate.</p>
+                </div>
+              </div>
+              <button type="button" onClick={() => setInviteOpen(false)} aria-label="Close invitation" className="rounded-lg p-1.5 text-slate-400 hover:bg-[#1E293B] hover:text-white"><X size={18} /></button>
+            </div>
+
+            {inviteError && <p role="alert" className="mb-4 rounded-lg border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-xs text-rose-300">{inviteError}</p>}
+
+            {createdInvitation ? (
+              <div className="space-y-4">
+                <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-emerald-400"><CheckCircle2 size={17} /> Invitation created</div>
+                  <p className="mt-1 text-xs leading-relaxed text-slate-400">Share this link with {createdInvitation.email}. It can be used once and expires in 7 days.</p>
+                </div>
+                <label className="block text-xs font-medium text-slate-400" htmlFor="invite-link">Invitation link</label>
+                <input id="invite-link" readOnly value={`${window.location.origin}/?invite=${encodeURIComponent(createdInvitation.token)}`} onFocus={(event) => event.currentTarget.select()} className="company-field text-xs" />
+                <div className="flex justify-end gap-2">
+                  <button type="button" onClick={() => setInviteOpen(false)} className="rounded-lg border border-[#334155] px-3 py-2 text-xs font-medium text-slate-300 hover:bg-[#1E293B]">Close</button>
+                  <button type="button" onClick={handleCopyInvite} className="flex items-center gap-2 rounded-lg bg-[#6366F1] px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-600">
+                    {copiedLink ? <Check size={14} /> : <Copy size={14} />}{copiedLink ? 'Copied' : 'Copy invite link'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleCreateInvite} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label htmlFor="associate-email" className="block text-xs font-medium text-slate-300">Work email</label>
+                  <input id="associate-email" type="email" required autoFocus value={inviteEmail} onChange={(event) => setInviteEmail(event.target.value)} placeholder="name@company.com" className="company-field" />
+                </div>
+                <p className="text-xs leading-relaxed text-slate-500">The associate will create their own sign-in. The invitation link is private, single-use, and valid for 7 days.</p>
+                <div className="flex justify-end gap-2 border-t border-[#334155] pt-4">
+                  <button type="button" onClick={() => setInviteOpen(false)} className="rounded-lg border border-[#334155] px-3 py-2 text-xs font-medium text-slate-300 hover:bg-[#1E293B]">Cancel</button>
+                  <button type="submit" disabled={sendingInvite} className="flex items-center gap-2 rounded-lg bg-[#6366F1] px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-600 disabled:cursor-wait disabled:opacity-60">
+                    <UserPlus size={14} />{sendingInvite ? 'Creating link…' : 'Create invitation'}
+                  </button>
+                </div>
+              </form>
+            )}
+          </section>
+        </div>
+      )}
     </div>
   );
 };

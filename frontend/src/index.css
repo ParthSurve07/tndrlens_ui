@@ -29,11 +29,27 @@
   --density-padding: 20px;
 }
 
+/* Shared typography scale: keep dense interface labels readable and consistent. */
+html { font-size: 14px; -webkit-text-size-adjust: 100%; }
+body { font-size: 0.95rem; line-height: 1.5; }
+button, input, select, textarea { font: inherit; }
+#root h1, #root h2, #root h3, #root h4, #root h5, #root h6 {
+  font-family: var(--font-family), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+#root p { line-height: 1.55; }
+#root .text-xs { font-size: 0.75rem !important; line-height: 1.45; }
+#root [class~="text-[8px]"], #root [class~="text-[9px]"] { font-size: 0.625rem !important; line-height: 1.4; }
+#root [class~="text-[10px]"], #root [class~="text-[11px]"] { font-size: 0.6875rem !important; line-height: 1.45; }
+#root .tracking-widest { letter-spacing: 0.08em; }
+#root .tracking-wider { letter-spacing: 0.045em; }
+
 @layer base {
   body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: var(--font-family);
+    font-family: var(--font-family), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-weight: var(--font-weight);
     letter-spacing: var(--letter-spacing);
     line-height: var(--line-height);
@@ -150,3 +166,93 @@
   padding: 0;
   display: block;
 }
+
+
+/* Dashboard layout: protect cards from collapsing in narrow app viewports. */
+.dashboard-shell { width: 100%; min-width: 0; }
+.dashboard-command-grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap: 1.5rem; align-items: start; }
+@media (max-width: 1100px) { .dashboard-command-grid { grid-template-columns: minmax(0, 1fr); } }
+.dashboard-panel { background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
+.dashboard-action { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.85rem 1rem; border: 1px solid var(--border-color); border-radius: 9px; background: var(--bg-color); color: var(--text-color); transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease; }
+.dashboard-action:hover { background: var(--card-color); border-color: color-mix(in srgb, var(--accent-color) 30%, var(--border-color)); color: var(--accent-color); }
+.dashboard-table-header { background: color-mix(in srgb, var(--bg-color) 72%, var(--surface-color)); }
+.dashboard-table-row:hover { background: color-mix(in srgb, var(--accent-color) 5%, var(--surface-color)); }
+.eligibility-badge { display: inline-flex; min-width: 3.25rem; justify-content: center; border: 1px solid; border-radius: 999px; padding: 0.25rem 0.55rem; font-size: 0.75rem; font-weight: 600; }
+.eligibility-good { color: var(--success-color); background: color-mix(in srgb, var(--success-color) 9%, var(--surface-color)); border-color: color-mix(in srgb, var(--success-color) 25%, var(--border-color)); }
+.eligibility-warn { color: var(--warning-color); background: color-mix(in srgb, var(--warning-color) 9%, var(--surface-color)); border-color: color-mix(in srgb, var(--warning-color) 25%, var(--border-color)); }
+.eligibility-risk { color: var(--danger-color); background: color-mix(in srgb, var(--danger-color) 8%, var(--surface-color)); border-color: color-mix(in srgb, var(--danger-color) 22%, var(--border-color)); }
+.analytics-risk-badge { display: inline-flex; min-width: 3.25rem; justify-content: center; border: 1px solid; border-radius: 999px; padding: 0.2rem 0.5rem; font-size: 0.6875rem; font-weight: 600; }
+.analytics-risk-low { color: var(--success-color); background: color-mix(in srgb, var(--success-color) 9%, var(--surface-color)); border-color: color-mix(in srgb, var(--success-color) 25%, var(--border-color)); }
+.analytics-risk-moderate { color: var(--warning-color); background: color-mix(in srgb, var(--warning-color) 9%, var(--surface-color)); border-color: color-mix(in srgb, var(--warning-color) 25%, var(--border-color)); }
+.analytics-risk-high { color: var(--danger-color); background: color-mix(in srgb, var(--danger-color) 8%, var(--surface-color)); border-color: color-mix(in srgb, var(--danger-color) 22%, var(--border-color)); }
+
+/* Company workspace form layout and controls. */
+.company-tab-panel { min-height: 0; padding: clamp(1rem, 2vw, 2rem) !important; }
+.company-tab-nav { width: 100%; }
+.company-field-group { display: flex; min-width: 0; flex-direction: column; gap: 0.45rem; }
+.company-field-label { color: var(--text-secondary); font-size: 0.75rem; font-weight: 600; line-height: 1.35; }
+.company-field { width: 100%; min-height: 2.75rem; border: 1px solid var(--border-color); border-radius: 0.55rem; background: var(--bg-color); padding: 0.65rem 0.8rem; color: var(--text-color); font: inherit; font-size: 0.875rem; line-height: 1.4; transition: border-color 150ms ease, box-shadow 150ms ease; }
+.company-field:focus { border-color: var(--accent-color); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 16%, transparent); }
+.company-save-button { white-space: nowrap; }
+@media (max-width: 640px) {
+  .company-tab-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .company-tab-panel { padding: 1rem !important; }
+}
+
+
+/* Theme-driven accents and semantic colors used by existing utility classes. */
+.bg-\[\#6366F1\], .bg-\[\#4f46e5\], .bg-\[\#6d5df6\] { background-color: var(--accent-color) !important; }
+.text-\[\#6366F1\] { color: var(--accent-color) !important; }
+.border-\[\#6366F1\] { border-color: var(--accent-color) !important; }
+.text-emerald-400, .text-emerald-500 { color: var(--success-color) !important; }
+.bg-emerald-500, .bg-emerald-400 { background-color: var(--success-color) !important; }
+.border-emerald-500, .border-emerald-400 { border-color: var(--success-color) !important; }
+.text-amber-400, .text-amber-500 { color: var(--warning-color) !important; }
+.bg-amber-500, .bg-amber-400 { background-color: var(--warning-color) !important; }
+.border-amber-500, .border-amber-400 { border-color: var(--warning-color) !important; }
+.text-rose-400, .text-rose-500, .text-red-400, .text-red-500 { color: var(--danger-color) !important; }
+.bg-rose-500, .bg-rose-400, .bg-red-500, .bg-red-400 { background-color: var(--danger-color) !important; }
+.border-rose-500, .border-rose-400, .border-red-500, .border-red-400 { border-color: var(--danger-color) !important; }
+
+/* Keep tinted accents tied to the selected theme. */
+.bg-\[\#6366F1\]\/5 { background-color: color-mix(in srgb, var(--accent-color) 5%, transparent) !important; }
+.bg-\[\#6366F1\]\/10 { background-color: color-mix(in srgb, var(--accent-color) 10%, transparent) !important; }
+.bg-\[\#6366F1\]\/20 { background-color: color-mix(in srgb, var(--accent-color) 20%, transparent) !important; }
+.border-\[\#6366F1\]\/20 { border-color: color-mix(in srgb, var(--accent-color) 20%, transparent) !important; }
+.border-\[\#6366F1\]\/25 { border-color: color-mix(in srgb, var(--accent-color) 25%, transparent) !important; }
+.border-\[\#6366F1\]\/30 { border-color: color-mix(in srgb, var(--accent-color) 30%, transparent) !important; }
+.border-\[\#6366F1\]\/55 { border-color: color-mix(in srgb, var(--accent-color) 55%, transparent) !important; }
+.text-\[\#10B981\] { color: var(--success-color) !important; }
+.bg-\[\#10B981\] { background-color: var(--success-color) !important; }
+.border-\[\#10B981\] { border-color: var(--success-color) !important; }
+.text-\[\#F59E0B\] { color: var(--warning-color) !important; }
+.bg-\[\#F59E0B\] { background-color: var(--warning-color) !important; }
+.border-\[\#F59E0B\] { border-color: var(--warning-color) !important; }
+.text-\[\#EF4444\] { color: var(--danger-color) !important; }
+.bg-\[\#EF4444\] { background-color: var(--danger-color) !important; }
+.border-\[\#EF4444\] { border-color: var(--danger-color) !important; }
+
+
+/* Theme-aware upload and empty states stay subtle and legible in every palette. */
+.theme-dropzone, .theme-empty-state { background-color: var(--card-color) !important; border-color: var(--border-color) !important; }
+.theme-dropzone:hover { border-color: var(--accent-color) !important; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 10%, transparent); }
+
+
+/* Account menu hover states use the current theme rather than fixed slate colors. */
+.account-menu-item { border: 1px solid transparent; transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease; }
+.account-menu-item:hover, .account-menu-item:focus-visible { background-color: var(--card-color) !important; border-color: color-mix(in srgb, var(--accent-color) 22%, var(--border-color)) !important; color: var(--accent-color) !important; outline: none; }
+
+
+/* Landing page surfaces and accents adapt to the active light, dark, or gray theme. */
+.landing-header { background-color: color-mix(in srgb, var(--surface-color) 94%, transparent) !important; border-color: var(--border-color) !important; }
+.landing-brand-gradient { background-image: linear-gradient(90deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 62%, #ffffff)) !important; }
+.bg-slate-950\/80 { background-color: color-mix(in srgb, var(--surface-color) 94%, transparent) !important; }
+.bg-indigo-950\/20 { background-color: color-mix(in srgb, var(--accent-color) 7%, var(--surface-color)) !important; }
+.bg-indigo-950\/40 { background-color: color-mix(in srgb, var(--accent-color) 10%, var(--surface-color)) !important; }
+.bg-indigo-950\/60 { background-color: color-mix(in srgb, var(--accent-color) 13%, var(--surface-color)) !important; }
+.bg-indigo-650\/10 { background-color: color-mix(in srgb, var(--accent-color) 8%, var(--surface-color)) !important; }
+.bg-indigo-650\/15 { background-color: color-mix(in srgb, var(--accent-color) 12%, var(--surface-color)) !important; }
+.border-indigo-500\/20 { border-color: color-mix(in srgb, var(--accent-color) 20%, var(--border-color)) !important; }
+.border-indigo-500\/30 { border-color: color-mix(in srgb, var(--accent-color) 30%, var(--border-color)) !important; }
+.bg-indigo-600 { background-color: var(--accent-color) !important; }
+.hover\:bg-indigo-600:hover { background-color: color-mix(in srgb, var(--accent-color) 82%, #000000) !important; }

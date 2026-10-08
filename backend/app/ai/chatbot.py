@@ -1,12 +1,9 @@
 import re
-from typing import List, Dict, Any, Tuple
-import google.generativeai as genai
-from app.config import settings
+from typing import Any, Dict, List, Tuple
+
 
 def chunk_text(text: str, chunk_size: int = 1000, overlap: int = 200) -> List[str]:
-    """
-    Splits text into chunks of roughly chunk_size characters with overlap.
-    """
+    """Splits text into chunks of roughly chunk_size characters with overlap."""
     chunks = []
     start = 0
     while start < len(text):
@@ -29,7 +26,6 @@ def search_relevant_chunks(query: str, chunks: List[str], top_n: int = 3) -> Lis
         chunk_words = re.findall(r'\w+', chunk.lower())
         if not chunk_words:
             continue
-        # Count word match occurrences
         matches = sum(1 for w in chunk_words if w in query_words)
         score = matches / len(query_words)
         scored_chunks.append((chunk, score))
@@ -39,56 +35,17 @@ def search_relevant_chunks(query: str, chunks: List[str], top_n: int = 3) -> Lis
     return scored_chunks[:top_n]
 
 def ask_tender_chatbot(tender_text: str, query: str) -> Dict[str, Any]:
-    """
-    Queries the tender text using a simple RAG pipeline.
-    Calls Gemini if API key is present, otherwise falls back to a smart local responder.
-    """
+    """Answer locally using the tender passages most relevant to the question."""
     chunks = chunk_text(tender_text)
     relevant_chunks_scored = search_relevant_chunks(query, chunks, top_n=3)
     relevant_chunks = [c[0].strip() for c in relevant_chunks_scored if c[1] > 0.0]
-    
-    # If no keywords matched, just grab first few chunks as fallback context
     if not relevant_chunks:
         relevant_chunks = [c.strip() for c in chunks[:2]]
-        
-    if settings.GEMINI_API_KEY:
-        try:
-            return ask_gemini_rag(query, relevant_chunks)
-        except Exception as e:
-            print(f"Gemini RAG failed: {e}. Falling back to local solver...")
-            return ask_locally_rag(query, relevant_chunks)
-    else:
-        return ask_locally_rag(query, relevant_chunks)
+    return ask_locally_rag(query, relevant_chunks)
 
 def ask_gemini_rag(query: str, context_chunks: List[str]) -> Dict[str, Any]:
-    """
-    Generates a response using Gemini based on the retrieval context.
-    """
-    genai.configure(api_key=settings.GEMINI_API_KEY)
-    model = genai.GenerativeModel('gemini-1.5-flash')
-    
-    context = "\n---\n".join(context_chunks)
-    prompt = f"""
-    You are an AI Tender Assistant. Answer the user's question using ONLY the provided tender document context.
-    If the context does not contain the answer, say "I cannot find this information in the document."
-    
-    QUESTION:
-    {query}
-    
-    TENDER DOCUMENT CONTEXT:
-    {context}
-    
-    Respond in a helpful, structured markdown format.
-    """
-    
-    response = model.generate_content(prompt)
-    
-    # We return the top 2 context chunks as the source references
-    references = [c[:150] + "..." for c in context_chunks]
-    return {
-        "answer": response.text,
-        "references": references
-    }
+    """Keep this legacy function local-only; tender content is not sent to a provider."""
+    return ask_locally_rag(query, context_chunks)
 
 def ask_locally_rag(query: str, context_chunks: List[str]) -> Dict[str, Any]:
     """

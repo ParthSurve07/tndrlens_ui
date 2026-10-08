@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime
 
 # --- User Schemas ---
@@ -17,9 +17,33 @@ class UserResponse(UserBase):
     class Config:
         from_attributes = True
 
+class UserProfileUpdate(BaseModel):
+    username: str
+    email: EmailStr
+
 class UserLogin(BaseModel):
     username: str
     password: str
+
+class TeamInvitationCreate(BaseModel):
+    email: EmailStr
+
+class TeamInvitationAccept(BaseModel):
+    token: str
+    username: str
+    password: str
+
+class TeamInvitationResponse(BaseModel):
+    id: int
+    email: EmailStr
+    role: str
+    status: str
+    created_at: datetime
+    expires_at: datetime
+    accepted_at: Optional[datetime] = None
+
+class TeamInvitationCreated(TeamInvitationResponse):
+    token: str
 
 # --- Token Schemas ---
 class Token(BaseModel):
@@ -51,6 +75,9 @@ class CompanyProfileResponse(CompanyProfileBase):
     
     class Config:
         from_attributes = True
+
+class CompanyTenderDetailsUpdate(BaseModel):
+    details: Dict[str, Any]
 
 # --- Tender Clauses ---
 class TenderClauseResponse(BaseModel):

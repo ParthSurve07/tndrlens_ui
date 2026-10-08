@@ -1,16 +1,23 @@
 from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File, Form
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List, Dict, Any
 import os
 import shutil
+import hashlib
+import secrets
+import datetime
+import json
 
 from app.config import settings
 from app.database import engine, Base, get_db
-from app.models import User, CompanyProfile, Tender, TenderClause, TenderAmendment, DocumentChecklist
+from app.models import User, CompanyProfile, CompanyTenderDetails, Tender, TenderClause, TenderAmendment, DocumentChecklist, TeamInvitation
 from app.schemas import (
-    UserCreate, UserResponse, Token, UserLogin,
+    UserCreate, UserResponse, Token, UserLogin, UserProfileUpdate,
+    TeamInvitationCreate, TeamInvitationAccept, TeamInvitationResponse, TeamInvitationCreated,
     CompanyProfileCreate, CompanyProfileResponse,
+    CompanyTenderDetailsUpdate,
     TenderResponse, DocumentChecklistUpdate, ChatRequest, ChatResponse
 )
 from app.auth import get_password_hash, verify_password, create_access_token, get_current_user
@@ -21,7 +28,7 @@ from app.ai.vector_db import vector_index
 from app.ai.diff_tracker import generate_amendment_diff
 from app.ai.chatbot import ask_tender_chatbot
 
-app = FastAPI(title="AI-Based Tender Intelligence & Bid Management Platform API")
+app = FastAPI(title="Tndrlens API")
 
 # Configure CORS
 app.add_middleware(
@@ -120,6 +127,156 @@ def login_for_access_token(form_data: UserLogin, db: Session = Depends(get_db)):
 def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 
+@app.put("/api/auth/me")
+def update_users_me(
+    profile_in: UserProfileUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    username = profile_in.username.strip()
+    if not username:
+        raise HTTPException(status_code=422, detail="Username cannot be empty")
+
+    existing_user = db.query(User).filter(
+        User.username == username,
+        User.id != current_user.id,
+    ).first()
+    if existing_user:
+        raise HTTPException(status_code=409, detail="Username is already in use")
+
+    email = str(profile_in.email).strip().lower()
+    existing_email = db.query(User).filter(
+        User.email == email,
+        User.id != current_user.id,
+    ).first()
+    if existing_email:
+        raise HTTPException(status_code=409, detail="Email is already in use")
+
+    current_user.username = username
+    current_user.email = email
+    db.commit()
+    db.refresh(current_user)
+
+    # The access token identifies its owner by username, so issue a fresh token
+    # when the username changes to keep the current session valid.
+    access_token = create_access_token(data={"sub": current_user.username, "role": current_user.role})
+    return {
+        "id": current_user.id,
+        "username": current_user.username,
+        "email": current_user.email,
+        "role": current_user.role,
+        "access_token": access_token,
+    }
+
+@app.post("/api/team/invitations", response_model=TeamInvitationCreated)
+def create_team_invitation(
+    invitation_in: TeamInvitationCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    email = str(invitation_in.email).lower()
+    if db.query(User).filter(User.email == email).first():
+        raise HTTPException(status_code=409, detail="An account already exists for this email")
+
+    pending = db.query(TeamInvitation).filter(
+        TeamInvitation.invited_by_id == current_user.id,
+        TeamInvitation.email == email,
+        TeamInvitation.accepted_at.is_(None),
+    ).first()
+    if pending:
+        db.delete(pending)
+
+    token = secrets.token_urlsafe(32)
+    now = datetime.datetime.utcnow()
+    invitation = TeamInvitation(
+        email=email,
+        role="employee",
+        token_hash=hashlib.sha256(token.encode()).hexdigest(),
+        invited_by_id=current_user.id,
+        created_at=now,
+        expires_at=now + datetime.timedelta(days=7),
+    )
+    db.add(invitation)
+    db.commit()
+    db.refresh(invitation)
+    return {
+        "id": invitation.id,
+        "email": invitation.email,
+        "role": invitation.role,
+        "status": "pending",
+        "created_at": invitation.created_at,
+        "expires_at": invitation.expires_at,
+        "accepted_at": invitation.accepted_at,
+        "token": token,
+    }
+
+@app.get("/api/team/invitations", response_model=List[TeamInvitationResponse])
+def list_team_invitations(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    now = datetime.datetime.utcnow()
+    invitations = db.query(TeamInvitation).filter(
+        TeamInvitation.invited_by_id == current_user.id
+    ).order_by(TeamInvitation.created_at.desc()).all()
+    return [
+        {
+            "id": invitation.id,
+            "email": invitation.email,
+            "role": invitation.role,
+            "status": "accepted" if invitation.accepted_at else "expired" if invitation.expires_at <= now else "pending",
+            "created_at": invitation.created_at,
+            "expires_at": invitation.expires_at,
+            "accepted_at": invitation.accepted_at,
+        }
+        for invitation in invitations
+    ]
+
+@app.get("/api/team/invitations/lookup", response_model=TeamInvitationResponse)
+def lookup_team_invitation(token: str, db: Session = Depends(get_db)):
+    token_hash = hashlib.sha256(token.encode()).hexdigest()
+    invitation = db.query(TeamInvitation).filter(TeamInvitation.token_hash == token_hash).first()
+    if not invitation:
+        raise HTTPException(status_code=404, detail="Invitation not found")
+    now = datetime.datetime.utcnow()
+    invitation_status = "accepted" if invitation.accepted_at else "expired" if invitation.expires_at <= now else "pending"
+    return {
+        "id": invitation.id,
+        "email": invitation.email,
+        "role": invitation.role,
+        "status": invitation_status,
+        "created_at": invitation.created_at,
+        "expires_at": invitation.expires_at,
+        "accepted_at": invitation.accepted_at,
+    }
+
+@app.post("/api/team/invitations/accept", response_model=UserResponse)
+def accept_team_invitation(invite_in: TeamInvitationAccept, db: Session = Depends(get_db)):
+    token_hash = hashlib.sha256(invite_in.token.encode()).hexdigest()
+    invitation = db.query(TeamInvitation).filter(TeamInvitation.token_hash == token_hash).first()
+    if not invitation or invitation.accepted_at or invitation.expires_at <= datetime.datetime.utcnow():
+        raise HTTPException(status_code=400, detail="This invitation is invalid, expired, or already used")
+    if db.query(User).filter(User.username == invite_in.username).first():
+        raise HTTPException(status_code=409, detail="Username already registered")
+    if db.query(User).filter(User.email == invitation.email).first():
+        raise HTTPException(status_code=409, detail="An account already exists for this email")
+    if len(invite_in.password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+
+    user = User(
+        username=invite_in.username,
+        email=invitation.email,
+        password_hash=get_password_hash(invite_in.password),
+        role=invitation.role,
+    )
+    db.add(user)
+    db.flush()
+    invitation.accepted_user_id = user.id
+    invitation.accepted_at = datetime.datetime.utcnow()
+    db.commit()
+    db.refresh(user)
+    return user
+
 # --- COMPANY PROFILE ENDPOINTS ---
 
 @app.get("/api/profile", response_model=CompanyProfileResponse)
@@ -194,6 +351,38 @@ def update_profile(profile_in: CompanyProfileCreate, db: Session = Depends(get_d
             print(f"Error recalculating tender {tender.id} eligibility: {e}")
             
     return profile
+
+@app.get("/api/profile/tender-details")
+def get_company_tender_details(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    profile = db.query(CompanyProfile).first()
+    if not profile:
+        raise HTTPException(status_code=404, detail="Company profile not found")
+    details = db.query(CompanyTenderDetails).filter(CompanyTenderDetails.profile_id == profile.id).first()
+    return json.loads(details.details_json) if details else {}
+
+@app.put("/api/profile/tender-details")
+def update_company_tender_details(
+    details_in: CompanyTenderDetailsUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    profile = db.query(CompanyProfile).first()
+    if not profile:
+        raise HTTPException(status_code=404, detail="Company profile not found")
+    details_json = json.dumps(details_in.details)
+    if len(details_json) > 100_000:
+        raise HTTPException(status_code=413, detail="Company tender details are too large")
+    details = db.query(CompanyTenderDetails).filter(CompanyTenderDetails.profile_id == profile.id).first()
+    if not details:
+        details = CompanyTenderDetails(profile_id=profile.id)
+        db.add(details)
+    details.details_json = details_json
+    details.updated_at = datetime.datetime.utcnow()
+    db.commit()
+    return details_in.details
 
 # --- TENDER ENDPOINTS ---
 
@@ -430,6 +619,21 @@ def get_tender_by_id(tender_id: int, db: Session = Depends(get_db), current_user
     if not tender:
         raise HTTPException(status_code=404, detail="Tender not found")
     return tender
+
+@app.get("/api/tenders/{tender_id}/document")
+def get_tender_document(tender_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    tender = db.query(Tender).filter(Tender.id == tender_id).first()
+    if not tender:
+        raise HTTPException(status_code=404, detail="Tender not found")
+    if not tender.file_path:
+        raise HTTPException(status_code=404, detail="No PDF is attached to this tender")
+
+    upload_root = os.path.realpath(settings.UPLOAD_DIR)
+    document_path = os.path.realpath(tender.file_path)
+    if os.path.commonpath([upload_root, document_path]) != upload_root or not os.path.isfile(document_path):
+        raise HTTPException(status_code=404, detail="Tender PDF is unavailable")
+
+    return FileResponse(document_path, media_type="application/pdf", filename=os.path.basename(document_path))
 
 @app.delete("/api/tenders/{tender_id}")
 def delete_tender(tender_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):

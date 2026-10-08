@@ -18,7 +18,6 @@ const STORAGE_KEY_COLLAPSED = 'sidebar-collapsed';
 interface SidebarProps {
   currentTab: string;
   setCurrentTab: (tab: string) => void;
-  onAccountClick: () => void;
   onLogout: () => void;
   pinnedTenders: any[];
   onSelectTender: (id: number) => void;
@@ -40,7 +39,7 @@ const Tooltip: React.FC<{ label: string; children: React.ReactNode }> = ({ label
 
 // ─── Component ─────────────────────────────────────────────────────────────────
 export const Sidebar: React.FC<SidebarProps> = ({
-  currentTab, setCurrentTab, onAccountClick, onLogout,
+  currentTab, setCurrentTab, onLogout,
   pinnedTenders, onSelectTender, selectedTenderId, onPinToggle,
   onWidthChange
 }) => {
@@ -233,7 +232,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* ── Brand / Logo ────────────────────────────────────────────────────── */}
       <div className="h-16 flex items-center px-4 border-b border-slate-border shrink-0 overflow-hidden">
         {isCollapsed ? (
-          <Tooltip label="Tndrlens">
+          <Tooltip label="TenderIntel">
             <div className="bg-[#6366F1]/10 border border-[#6366F1]/25 text-accent p-2 rounded-xl flex items-center justify-center mx-auto">
               <FileText size={16} />
             </div>
@@ -245,7 +244,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
             {showLabels && (
               <div className="overflow-hidden min-w-0">
-                <span className="font-extrabold text-xs text-[#F8FAFC] block tracking-tight truncate">Tndrlens</span>
+                <span className="font-extrabold text-xs text-[#F8FAFC] block tracking-tight truncate">TenderIntel</span>
+                <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block truncate">Enterprise Suite</span>
               </div>
             )}
           </div>
@@ -536,13 +536,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className={`border-t border-slate-border/60 shrink-0 ${isCollapsed ? 'p-2' : 'p-3'}`}>
         {isCollapsed ? (
           <Tooltip label={`${username} · ${role}`}>
-            <button type="button" aria-label={`Open account settings for ${username}`} onClick={onAccountClick} className="w-8 h-8 rounded-full bg-surface border border-slate-border flex items-center justify-center text-xs font-bold text-accent capitalize mx-auto cursor-pointer hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+            <div className="w-8 h-8 rounded-full bg-surface border border-slate-border flex items-center justify-center text-xs font-bold text-accent capitalize mx-auto cursor-pointer">
               {username.substring(0, 2)}
-            </button>
+            </div>
           </Tooltip>
         ) : (
           <div className="space-y-2">
-            <button type="button" onClick={onAccountClick} aria-label="Open account settings" className="flex w-full items-center gap-2.5 rounded-lg px-1 py-1 text-left hover:bg-card-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+            <div className="flex items-center gap-2.5 px-1">
               <div className="w-7 h-7 rounded-full bg-surface border border-slate-border flex items-center justify-center text-[10px] font-bold text-accent capitalize shrink-0">
                 {username.substring(0, 2)}
               </div>
@@ -552,7 +552,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider truncate">{role}</p>
                 </div>
               )}
-            </button>
+            </div>
             <button
               onClick={() => { clearAuth(); onLogout(); }}
               className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-rose-400 bg-rose-500/5 hover:bg-rose-500/15 border border-rose-500/10 hover:border-rose-500/25 transition-all"

@@ -18,6 +18,32 @@ export interface CompanyProfile {
   manpower_count: number;
 }
 
+export interface CompanyTenderDetails {
+  entityType: string;
+  incorporationNumber: string;
+  udyamNumber: string;
+  epfNumber: string;
+  esiNumber: string;
+  contractorLicenseExpiry: string;
+  turnoverFy1: number;
+  turnoverFy2: number;
+  turnoverFy3: number;
+  workingCapital: number;
+  bankGuaranteeLimit: number;
+  emdCapacity: number;
+  solvencyCertificateExpiry: string;
+  auditFirm: string;
+  authorizedSignatory: string;
+  signatoryDesignation: string;
+  signatoryEmail: string;
+  signatoryPhone: string;
+  dscExpiry: string;
+  completedProjectReferences: string;
+  ongoingCommitments: string;
+  debarmentStatus: string;
+  litigationDisclosure: string;
+}
+
 export interface TenderClause {
   id: number;
   category: string;
@@ -96,6 +122,20 @@ export interface SimilarTender {
   similarity_score: number;
 }
 
+export interface TeamInvitation {
+  id: number;
+  email: string;
+  role: string;
+  status: 'pending' | 'accepted' | 'expired';
+  created_at: string;
+  expires_at: string;
+  accepted_at: string | null;
+}
+
+export interface CreatedTeamInvitation extends TeamInvitation {
+  token: string;
+}
+
 // Token helper
 export const getAuthToken = () => localStorage.getItem('token');
 export const setAuthToken = (token: string) => localStorage.setItem('token', token);
@@ -157,10 +197,25 @@ export const api = {
     return res.json();
   },
 
+  updateMe: async (profile: { username: string; email: string }) => {
+    const res = await fetch(`${API_BASE_URL}/auth/me`, {
+      method: 'PUT',
+      headers: getHeaders(),
+      body: JSON.stringify(profile),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Failed to update account');
+    if (data.access_token) setAuthToken(data.access_token);
+    localStorage.setItem('username', data.username);
+    localStorage.setItem('role', data.role);
+    return data;
+  },
+
   // Company Profile
   getProfile: async (): Promise<CompanyProfile> => {
     const res = await fetch(`${API_BASE_URL}/profile`, {
-      headers: getHeaders()
+      headers: getHeaders(),
+      signal: AbortSignal.timeout(6000),
     });
     if (!res.ok) throw new Error('Failed to get company profile');
     return res.json();
@@ -173,6 +228,22 @@ export const api = {
       body: JSON.stringify(profile)
     });
     if (!res.ok) throw new Error('Failed to update company profile');
+    return res.json();
+  },
+
+  getCompanyTenderDetails: async (): Promise<Partial<CompanyTenderDetails>> => {
+    const res = await fetch(`${API_BASE_URL}/profile/tender-details`, { headers: getHeaders(), signal: AbortSignal.timeout(6000) });
+    if (!res.ok) throw new Error('Failed to load tender-readiness details');
+    return res.json();
+  },
+
+  updateCompanyTenderDetails: async (details: CompanyTenderDetails): Promise<CompanyTenderDetails> => {
+    const res = await fetch(`${API_BASE_URL}/profile/tender-details`, {
+      method: 'PUT',
+      headers: getHeaders(),
+      body: JSON.stringify({ details })
+    });
+    if (!res.ok) throw new Error('Failed to save tender-readiness details');
     return res.json();
   },
 
@@ -191,6 +262,15 @@ export const api = {
     });
     if (!res.ok) throw new Error('Failed to get tender details');
     return res.json();
+  },
+
+  getTenderDocument: async (id: number): Promise<Blob> => {
+    const res = await fetch(`${API_BASE_URL}/tenders/${id}/document`, { headers: getHeaders() });
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({}));
+      throw new Error(error.detail || 'Tender PDF is unavailable');
+    }
+    return res.blob();
   },
 
   deleteTender: async (id: number): Promise<any> => {
@@ -286,6 +366,47 @@ export const api = {
       headers: getHeaders()
     });
     if (!res.ok) throw new Error('Failed to fetch bookmarked tenders');
+    return res.json();
+  },
+
+  getTeamInvitations: async (): Promise<TeamInvitation[]> => {
+    const res = await fetch(`${API_BASE_URL}/team/invitations`, { headers: getHeaders() });
+    if (!res.ok) throw new Error('Failed to load team invitations');
+    return res.json();
+  },
+
+  createTeamInvitation: async (email: string): Promise<CreatedTeamInvitation> => {
+    const res = await fetch(`${API_BASE_URL}/team/invitations`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({ email })
+    });
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({}));
+      throw new Error(error.detail || 'Failed to create invitation');
+    }
+    return res.json();
+  },
+
+  getTeamInvitation: async (token: string): Promise<TeamInvitation> => {
+    const res = await fetch(`${API_BASE_URL}/team/invitations/lookup?token=${encodeURIComponent(token)}`);
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({}));
+      throw new Error(error.detail || 'This invitation could not be found');
+    }
+    return res.json();
+  },
+
+  acceptTeamInvitation: async (token: string, username: string, password: string): Promise<User> => {
+    const res = await fetch(`${API_BASE_URL}/team/invitations/accept`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, username, password })
+    });
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({}));
+      throw new Error(error.detail || 'Failed to accept invitation');
+    }
     return res.json();
   }
 };

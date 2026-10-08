@@ -1,0 +1,728 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 4 0 R 5 0 R 6 0 R 7 0 R 8 0 R] /Count 6 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 9 0 R /Resources << /Font << /F1 15 0 R /F2 16 0 R /F3 17 0 R >> >> >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 10 0 R /Resources << /Font << /F1 15 0 R /F2 16 0 R /F3 17 0 R >> >> >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 11 0 R /Resources << /Font << /F1 15 0 R /F2 16 0 R /F3 17 0 R >> >> >>
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 12 0 R /Resources << /Font << /F1 15 0 R /F2 16 0 R /F3 17 0 R >> >> >>
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 13 0 R /Resources << /Font << /F1 15 0 R /F2 16 0 R /F3 17 0 R >> >> >>
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 14 0 R /Resources << /Font << /F1 15 0 R /F2 16 0 R /F3 17 0 R >> >> >>
+endobj
+9 0 obj
+<< /Length 9117 >>
+stream
+0.080 0.160 0.320 rg 0.240 0.350 0.720 RG 1.50 w 44.00 701.89 507.28 92.00 re B
+0.240 0.350 0.720 rg 58.00 769.89 150.00 14.00 re f
+BT /F2 7.5 Tf 1.000 1.000 1.000 rg 64.00 773.89 Td (ENGINEERING SPECIFICATION) Tj ET
+BT /F2 15.0 Tf 1.000 1.000 1.000 rg 58.00 745.89 Td (AI-Based Tender Intelligence Platform) Tj ET
+BT /F1 9.5 Tf 0.820 0.880 0.980 rg 58.00 727.89 Td (Complete Functional & Technical Specifications for Backend & ML Teams) Tj ET
+BT /F3 8.0 Tf 0.700 0.760 0.880 rg 58.00 711.89 Td (Target Audience: Backend & ML Engineers  |  Release: v3.2 Production Ready  |  Date: October 2026) Tj ET
+0.950 0.970 0.990 rg 0.240 0.350 0.720 RG 1.00 w 44.00 634.89 507.28 51.00 re B
+0.240 0.350 0.720 rg 44.00 634.89 3.50 51.00 re f
+BT /F2 8.5 Tf 0.240 0.350 0.720 rg 56.00 673.89 Td (ARCHITECTURAL DIRECTIVE FOR BACKEND & ML TEAMS) Tj ET
+BT /F1 7.5 Tf 0.120 0.140 0.180 rg 56.00 662.89 Td (This document establishes the end-to-end functional requirements, API contracts, ML pipeline interfaces,) Tj ET
+BT /F1 7.5 Tf 0.120 0.140 0.180 rg 56.00 651.89 Td (database schemas, and verification checklists required to build the AI Procurement & Bid Management Platform.) Tj ET
+BT /F1 7.5 Tf 0.120 0.140 0.180 rg 56.00 640.89 Td (All modules must be implemented strictly following the structured JSON schemas and async lifecycles documented herein.) Tj ET
+0.240 0.350 0.720 rg 44.00 612.89 4.00 16.00 re f
+BT /F2 12.0 Tf 0.080 0.160 0.320 rg 54.00 616.89 Td (1. EXECUTIVE PLATFORM OVERVIEW) Tj ET
+0.820 0.850 0.900 rg 44.00 608.89 507.28 0.80 re f
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 598.89 Td (The AI-Based Tender Intelligence & Bid Management Platform is an enterprise-grade procurement co-pilot designed to) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 587.41 Td (automate the extraction, evaluation, compliance auditing, risk profiling, and proposal generation for government and) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 575.94 Td (infrastructure bids. It eliminates manual review of 100+ page tender PDFs, evaluates bid feasibility against) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 564.46 Td (corporate qualifications in seconds, and provides explainable Go/No-Go decision intelligence.) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 545.99 Td (1.1 Core High-Level System Architecture) Tj ET
+0.240 0.350 0.720 rg 54.00 533.99 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 531.99 Td (Presentation Layer: React 19, Tailwind CSS, ShadCN primitives, Recharts analytics, and multi-workspace tender) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 531.99 Td (Presentation Layer:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 521.19 Td (explorer.) Tj ET
+0.240 0.350 0.720 rg 54.00 510.89 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 508.89 Td (API & Orchestration Layer: Python FastAPI asynchronous service, JWT RBAC security, multipart PDF upload pipelines.) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 508.89 Td (API & Orchestration Layer:) Tj ET
+0.240 0.350 0.720 rg 54.00 498.59 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 496.59 Td (AI / ML Pipeline Layer: Google Gemini 1.5 Flash/Pro, multimodal OCR, text-embedding-004, semantic diff, and RAG) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 496.59 Td (AI / ML Pipeline Layer:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 485.79 Td (knowledge retrieval.) Tj ET
+0.240 0.350 0.720 rg 54.00 475.49 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 473.49 Td (Data & Vector Storage Layer: PostgreSQL/SQLite relational database for users/tenders/clauses +) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 473.49 Td (Data & Vector Storage Layer:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 462.69 Td (FAISS/ChromaDB/pgvector for embeddings.) Tj ET
+0.240 0.350 0.720 rg 54.00 452.39 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 450.39 Td (Corporate Vault Layer: Secure document repository tracking licenses, balance sheets, ISO certifications, and) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 450.39 Td (Corporate Vault Layer:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 439.59 Td (auto-matching requirements.) Tj ET
+0.240 0.350 0.720 rg 44.00 415.29 4.00 16.00 re f
+BT /F2 12.0 Tf 0.080 0.160 0.320 rg 54.00 419.29 Td (2. MACHINE LEARNING & AI ENGINEERING SPECIFICATIONS) Tj ET
+0.820 0.850 0.900 rg 44.00 411.29 507.28 0.80 re f
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 401.29 Td (The ML / AI Engineer is responsible for the text parsing pipeline, structured LLM extraction, deterministic) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 389.81 Td (eligibility comparison, risk heuristic profiling, semantic vector retrieval, contradiction detection, and) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 378.34 Td (generative drafting.) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 359.86 Td (Module ML-1: Document Ingestion & Multimodal OCR Pipeline) Tj ET
+0.240 0.350 0.720 rg 54.00 347.86 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 345.86 Td (Input: Tender PDFs \(digital vector PDFs and multi-page scanned image documents\), Corrigenda notices, and BOQ) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 345.86 Td (Input:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 335.06 Td (spreadsheets.) Tj ET
+0.240 0.350 0.720 rg 54.00 324.76 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 322.76 Td (Processing Pipeline: Extract raw text via pdfplumber / PyPDF2. Route scanned pages through OCR \(Tesseract / pdf2image) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 322.76 Td (Processing Pipeline:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 311.96 Td (or Gemini Multimodal\).) Tj ET
+0.240 0.350 0.720 rg 54.00 301.66 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 299.66 Td (Layout Normalization: Identify sections, preserve clause hierarchies \(e.g., Section III Clause 4.2.1\), and strip) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 299.66 Td (Layout Normalization:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 288.86 Td (boilerplate headers/footers.) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 272.56 Td (Module ML-2: Structured Entity & Clause Extraction Engine) Tj ET
+0.240 0.350 0.720 rg 54.00 260.56 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 258.56 Td (Target Schema Extraction: Call Gemini 1.5 Flash using structured JSON Schema outputs to enforce 100% deterministic) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 258.56 Td (Target Schema Extraction:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 247.76 Td (schema compliance.) Tj ET
+0.240 0.350 0.720 rg 54.00 237.46 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 235.46 Td (Core Metadata Extracted: Title, issuing authority, project value \(Cr\), EMD amount \(Lakhs\), submission deadline, and) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 235.46 Td (Core Metadata Extracted:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 224.66 Td (executive summary.) Tj ET
+0.240 0.350 0.720 rg 54.00 214.36 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 212.36 Td (Clause Categorization: Automatically segment requirements into 4 distinct categories:) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 212.36 Td (Clause Categorization:) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 58.00 200.06 Td (  * Financial: Minimum average annual turnover, liquid asset requirements, net worth criteria, bank solvency) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 58.00 188.59 Td (limits.) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 58.00 174.11 Td (  * Experience: Minimum completed project count, single contract threshold value \(Cr\), years of active corporate) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 58.00 162.64 Td (operations.) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 58.00 148.16 Td (  * Technical & Machinery: Mandatory equipment inventory \(segment launchers, batching plants, pavers\) and) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 58.00 136.69 Td (manpower count.) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 58.00 122.21 Td (  * Documentation: Statutory requirements \(Class-A contractor license, ISO 9001/14001, GST, PAN, EPF) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 58.00 110.74 Td (registrations\).) Tj ET
+0.240 0.350 0.720 rg 54.00 98.26 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 96.26 Td (Confidence Metric: Calculate extraction confidence score \(0.0 to 1.0\) per clause and aggregated for the document.) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 96.26 Td (Confidence Metric:) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 79.96 Td (Module ML-3: Explainable Eligibility & Compliance Engine) Tj ET
+0.240 0.350 0.720 rg 54.00 67.96 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 65.96 Td (Deterministic Rule Matching: Cross-compare extracted tender thresholds against the active CompanyProfile record.) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 65.96 Td (Deterministic Rule Matching:) Tj ET
+0.820 0.850 0.900 rg 44.00 36.00 507.28 1.00 re f
+BT /F1 7.0 Tf 0.400 0.440 0.500 rg 44.00 24.00 Td (CONFIDENTIAL & PROPRIETARY -- FOR BACKEND & ML ENGINEERING TEAMS) Tj ET
+BT /F2 7.5 Tf 0.080 0.160 0.320 rg 511.28 24.00 Td (Page 1) Tj ET
+endstream
+endobj
+10 0 obj
+<< /Length 11011 >>
+stream
+0.240 0.350 0.720 rg 54.00 795.89 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 793.89 Td (Clause-Level Explainability: Assign every clause an audit status \(PASS, FAIL, WARN\) accompanied by an explicit text) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 793.89 Td (Clause-Level Explainability:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 783.09 Td (justification.) Tj ET
+0.240 0.350 0.720 rg 54.00 772.79 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 770.79 Td (Equipment Parser: Extract machinery types and counts; check company assets; differentiate owned vs. permitted lease) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 770.79 Td (Equipment Parser:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 759.99 Td (equipment.) Tj ET
+0.240 0.350 0.720 rg 54.00 749.69 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 747.69 Td (Weighted Composite Formula: Calculate overall eligibility score: \(0.35 x Financial\) + \(0.30 x Experience\) + \(0.20 x) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 747.69 Td (Weighted Composite Formula:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 736.89 Td (Docs\) + \(0.15 x Tech\).) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 720.59 Td (Module ML-4: Risk Intelligence & Threat Scoring) Tj ET
+0.240 0.350 0.720 rg 54.00 708.59 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 706.59 Td (Penalty Trap Detection: Scan General and Special Conditions of Contract \(GCC/SCC\) for punitive liquidated damages) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 706.59 Td (Penalty Trap Detection:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 695.79 Td (\(>0.5%/week or cap >10%\).) Tj ET
+0.240 0.350 0.720 rg 54.00 685.49 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 683.49 Td (Risk Indices Generated: Calculate Financial Risk, Technical Risk, Compliance Risk, Documentation Risk, and Overall) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 683.49 Td (Risk Indices Generated:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 672.69 Td (Risk Score \(0-100%\).) Tj ET
+0.240 0.350 0.720 rg 54.00 662.39 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 660.39 Td (Mitigation Strategy Engine: Auto-generate recommended risk mitigations \(e.g., 'Draft 15-day buffer in structural) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 660.39 Td (Mitigation Strategy Engine:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 649.59 Td (concrete schedule'\).) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 633.29 Td (Module ML-5: Decision Support & Suitability Engine \(Go / No-Go\)) Tj ET
+0.240 0.350 0.720 rg 54.00 621.29 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 619.29 Td (Suitability Multi-Factor Score: Synthesize Profitability \(30%\), Inverted Competition \(25%\), Inverted Difficulty) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 619.29 Td (Suitability Multi-Factor Score:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 608.49 Td (\(25%\), and Travel Proximity \(20%\).) Tj ET
+0.240 0.350 0.720 rg 54.00 598.19 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 596.19 Td (Go / No-Go Classification: Verdict output as 'Go' \(>=75%\), 'Cautious' \(50-74%\), or 'No-Go' \(<50%\) with supporting) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 596.19 Td (Go / No-Go Classification:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 585.39 Td (bullet logic.) Tj ET
+0.240 0.350 0.720 rg 54.00 575.09 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 573.09 Td (Bid Readiness Index: Formula: 0.4 x Eligibility% + 0.6 x Document Readiness% \(tracks uploaded vs missing checklist) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 573.09 Td (Bid Readiness Index:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 562.29 Td (items\).) Tj ET
+0.240 0.350 0.720 rg 54.00 551.99 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 549.99 Td (Dynamic Action Plan: Generate ordered step-by-step resolution tasks to achieve 100% bid readiness \(e.g., 'Step 1:) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 549.99 Td (Dynamic Action Plan:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 539.19 Td (Renew ISO 9001 in Vault'\).) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 522.89 Td (Module ML-6: Contradiction & Pre-Bid Negotiation Assistant) Tj ET
+0.240 0.350 0.720 rg 54.00 510.89 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 508.89 Td (Contradiction Pipeline: Cross-scan sections to identify internal conflicts \(e.g., conflicting completion periods) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 508.89 Td (Contradiction Pipeline:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 498.09 Td (between NIT and Clause 11.4\).) Tj ET
+0.240 0.350 0.720 rg 54.00 487.79 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 485.79 Td (Pre-Bid Question Generator: Draft formal clarification letters for official pre-bid queries formatted with clause) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 485.79 Td (Pre-Bid Question Generator:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 474.99 Td (references.) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 458.69 Td (Module ML-7: Corrigendum / Amendment Semantic Diff Tracker) Tj ET
+0.240 0.350 0.720 rg 54.00 446.69 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 444.69 Td (Multi-Document Comparison: Diff base tender against newly published corrigendum PDFs.) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 444.69 Td (Multi-Document Comparison:) Tj ET
+0.240 0.350 0.720 rg 54.00 434.39 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 432.39 Td (Delta Detection: Flag extensions in deadlines, reductions in EMD fees, and alterations to technical criteria.) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 432.39 Td (Delta Detection:) Tj ET
+0.240 0.350 0.720 rg 54.00 422.09 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 420.09 Td (Impact Re-Evaluation: Automatically trigger re-scoring \(e.g., 'EMD lowered from Rs. 85L to 75L: Status updated to) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 420.09 Td (Impact Re-Evaluation:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 409.29 Td (PASS'\).) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 392.99 Td (Module ML-8: Semantic Vector Index & Similar Tender Retrieval) Tj ET
+0.240 0.350 0.720 rg 54.00 380.99 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 378.99 Td (Dense Vector Indexing: Embed summaries and clauses using text-embedding-004 \(or sentence-transformers\); store in) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 378.99 Td (Dense Vector Indexing:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 368.19 Td (FAISS / ChromaDB.) Tj ET
+0.240 0.350 0.720 rg 54.00 357.89 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 355.89 Td (Historical Similarity: Perform cosine similarity matching across past won/lost bids to calculate project similarity) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 355.89 Td (Historical Similarity:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 345.09 Td (percentages.) Tj ET
+0.240 0.350 0.720 rg 54.00 334.79 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 332.79 Td (Offline Resilience: Provide local TF-IDF / BM25 fallback engine when external embedding APIs are unavailable.) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 332.79 Td (Offline Resilience:) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 316.49 Td (Module ML-9: Tender RAG Chatbot \(Document QA\)) Tj ET
+0.240 0.350 0.720 rg 54.00 304.49 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 302.49 Td (Retrieval Pipeline: Chunk document \(1000 chars, 200 overlap\), execute hybrid keyword+vector search to retrieve top-3) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 302.49 Td (Retrieval Pipeline:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 291.69 Td (relevant context chunks.) Tj ET
+0.240 0.350 0.720 rg 54.00 281.39 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 279.39 Td (Hallucination-Free Generation: Strict grounding prompt ensuring answers reference only source text with clause/page) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 279.39 Td (Hallucination-Free Generation:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 268.59 Td (citations.) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 252.29 Td (Module ML-10: AI Proposal Generator & Bid Synthesizer) Tj ET
+0.240 0.350 0.720 rg 54.00 240.29 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 238.29 Td (Template Synthesis: Synthesize formal bid sections: Technical Qualifications Bid, Methodology Work Plan, Site Safety) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 238.29 Td (Template Synthesis:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 227.49 Td (Plan, and BOQ Sheets.) Tj ET
+0.240 0.350 0.720 rg 54.00 217.19 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 215.19 Td (Dynamic Injection: Autofill company registration numbers, ISO audit dates, turnover figures, and machinery lists into) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 215.19 Td (Dynamic Injection:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 204.39 Td (proposal drafts.) Tj ET
+0.240 0.350 0.720 rg 44.00 180.09 4.00 16.00 re f
+BT /F2 12.0 Tf 0.080 0.160 0.320 rg 54.00 184.09 Td (3. BACKEND ENGINEERING SPECIFICATIONS) Tj ET
+0.820 0.850 0.900 rg 44.00 176.09 507.28 0.80 re f
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 166.09 Td (The Backend Engineer is responsible for API routing, security, data persistence, file storage, async task) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 154.62 Td (management, and business logic.) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 136.14 Td (Module BE-1: Authentication & Role-Based Access Control \(RBAC\)) Tj ET
+0.240 0.350 0.720 rg 54.00 124.14 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 122.14 Td (Endpoints: POST /api/auth/register, POST /api/auth/login, GET /api/auth/me.) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 122.14 Td (Endpoints:) Tj ET
+0.240 0.350 0.720 rg 54.00 111.84 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 109.84 Td (Security: Password hashing using bcrypt; JWT tokens with configurable expiration \(HS256\); bearer token middleware.) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 109.84 Td (Security:) Tj ET
+0.240 0.350 0.720 rg 54.00 99.54 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 97.54 Td (Roles: Admin \(full rights\), Company Manager \(upload/edit/approve\), Estimator \(view/chat/draft\), Employee) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 97.54 Td (Roles:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 86.74 Td (\(read-only\).) Tj ET
+0.820 0.850 0.900 rg 44.00 809.89 507.28 1.00 re f
+BT /F2 7.5 Tf 0.400 0.440 0.500 rg 44.00 815.89 Td (AI-BASED TENDER INTELLIGENCE & BID MANAGEMENT PLATFORM) Tj ET
+BT /F1 7.5 Tf 0.400 0.440 0.500 rg 371.28 815.89 Td (TECHNICAL & FUNCTIONAL SPECIFICATION) Tj ET
+0.820 0.850 0.900 rg 44.00 36.00 507.28 1.00 re f
+BT /F1 7.0 Tf 0.400 0.440 0.500 rg 44.00 24.00 Td (CONFIDENTIAL & PROPRIETARY -- FOR BACKEND & ML ENGINEERING TEAMS) Tj ET
+BT /F2 7.5 Tf 0.080 0.160 0.320 rg 511.28 24.00 Td (Page 2) Tj ET
+endstream
+endobj
+11 0 obj
+<< /Length 11554 >>
+stream
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 789.89 Td (Module BE-2: Company Profile & Corporate Vault Management) Tj ET
+0.240 0.350 0.720 rg 54.00 777.89 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 775.89 Td (Profile CRUD: GET /api/profile, PUT /api/profile. Stores turnover, experience years, past projects, equipment, and) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 775.89 Td (Profile CRUD:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 765.09 Td (certifications.) Tj ET
+0.240 0.350 0.720 rg 54.00 754.79 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 752.79 Td (Auto-Recalculation Hook: Updating company profile triggers asynchronous re-evaluation of all active tenders in) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 752.79 Td (Auto-Recalculation Hook:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 741.99 Td (database.) Tj ET
+0.240 0.350 0.720 rg 54.00 731.69 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 729.69 Td (Corporate Document Vault: File directory tracking licenses and tax records; monitors certificate expiry; auto-matches) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 729.69 Td (Corporate Document Vault:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 718.89 Td (with tender checklists.) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 702.59 Td (Module BE-3: Tender Lifecycle & File Pipeline) Tj ET
+0.240 0.350 0.720 rg 54.00 690.59 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 688.59 Td (Tender Upload: POST /api/tenders/upload accepts multipart PDF. Saves file, calls ML pipeline, persists) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 688.59 Td (Tender Upload:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 677.79 Td (clauses/checklists, indexes in vector DB.) Tj ET
+0.240 0.350 0.720 rg 54.00 667.49 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 665.49 Td (Catalog CRUD: GET /api/tenders, GET /api/tenders/{id}, DELETE /api/tenders/{id} \(cascades file deletion and vector) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 665.49 Td (Catalog CRUD:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 654.69 Td (index purge\).) Tj ET
+0.240 0.350 0.720 rg 54.00 644.39 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 642.39 Td (Status Tracking: Maintains lifecycle state: 'pending', 'analyzed', 'error', 'discovery_bookmarked'.) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 642.39 Td (Status Tracking:) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 626.09 Td (Module BE-4: Tender Discovery & Portal Aggregation) Tj ET
+0.240 0.350 0.720 rg 54.00 614.09 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 612.09 Td (Discovery Route: GET /api/tenders/discovery supports query filtering by keyword \(q\), department \(dept\), and value) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 612.09 Td (Discovery Route:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 601.29 Td (range \(min_val, max_val\).) Tj ET
+0.240 0.350 0.720 rg 54.00 590.99 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 588.99 Td (Bookmarking / Pinning: PUT /api/tenders/{id}/bookmark toggles pinned status; imports mock/live discovery tender into) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 588.99 Td (Bookmarking / Pinning:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 578.19 Td (active database.) Tj ET
+0.240 0.350 0.720 rg 54.00 567.89 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 565.89 Td (Saved Bids: GET /api/tenders/saved returns filtered bookmarked tenders.) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 565.89 Td (Saved Bids:) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 549.59 Td (Module BE-5: Corrigendum Versioning & Deadline Auto-Sync) Tj ET
+0.240 0.350 0.720 rg 54.00 537.59 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 535.59 Td (Amendment Ingestion: POST /api/tenders/{id}/amendment accepts corrigendum PDF, runs diff engine, stores amendment) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 535.59 Td (Amendment Ingestion:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 524.79 Td (record.) Tj ET
+0.240 0.350 0.720 rg 54.00 514.49 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 512.49 Td (Dynamic Field Updates: Regex parsers extract extended deadlines and revised EMD values to automatically update parent) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 512.49 Td (Dynamic Field Updates:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 501.69 Td (tender records.) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 485.39 Td (Module BE-6: Checklist & Bid Readiness Tracking) Tj ET
+0.240 0.350 0.720 rg 54.00 473.39 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 471.39 Td (Checklist Updates: PUT /api/tenders/{id}/checklist/{item_id} updates document status \(missing, uploaded,) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 471.39 Td (Checklist Updates:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 460.59 Td (vault_matched\).) Tj ET
+0.240 0.350 0.720 rg 54.00 450.29 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 448.29 Td (Score Re-computation: Checklist status change automatically updates bid_readiness_score and recalculates the dynamic) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 448.29 Td (Score Re-computation:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 437.49 Td (action plan.) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 421.19 Td (Module BE-7: Team Collaboration & Activity Audit Trail) Tj ET
+0.240 0.350 0.720 rg 54.00 409.19 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 407.19 Td (Task Management: Create and toggle status of bid preparation tasks \(todo, in_progress, completed\) linked to specific) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 407.19 Td (Task Management:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 396.39 Td (tenders.) Tj ET
+0.240 0.350 0.720 rg 54.00 386.09 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 384.09 Td (Activity Audit: Log all critical events: document uploads, eligibility evaluations, corrigendum diffs, and checklist) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 384.09 Td (Activity Audit:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 373.29 Td (modifications.) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 356.99 Td (Module BE-8: Analytics & Aggregations) Tj ET
+0.240 0.350 0.720 rg 54.00 344.99 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 342.99 Td (Pipeline Valuation: Aggregate active bid pipeline values, average risk distribution, and readiness percentages for) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 342.99 Td (Pipeline Valuation:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 332.19 Td (executive reporting.) Tj ET
+0.240 0.350 0.720 rg 44.00 307.89 4.00 16.00 re f
+BT /F2 12.0 Tf 0.080 0.160 0.320 rg 54.00 311.89 Td (4. DATABASE SCHEMA & DATA MODELS) Tj ET
+0.820 0.850 0.900 rg 44.00 303.89 507.28 0.80 re f
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 293.89 Td (The database architecture requires 8 primary relational entities supporting cascading integrity:) Tj ET
+0.080 0.160 0.320 rg 0.240 0.350 0.720 RG 0.80 w 44.00 261.42 507.28 18.00 re B
+BT /F2 7.5 Tf 1.000 1.000 1.000 rg 49.00 267.42 Td (Table Name) Tj ET
+BT /F2 7.5 Tf 1.000 1.000 1.000 rg 134.00 267.42 Td (Key Columns) Tj ET
+BT /F2 7.5 Tf 1.000 1.000 1.000 rg 294.00 267.42 Td (Relationships / Foreign Keys) Tj ET
+BT /F2 7.5 Tf 1.000 1.000 1.000 rg 414.00 267.42 Td (Description) Tj ET
+0.970 0.980 0.990 rg 0.820 0.850 0.900 RG 0.50 w 44.00 245.42 507.28 16.00 re B
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 49.00 250.42 Td (users) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 134.00 250.42 Td (id, username, email, password_hash, role) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 294.00 250.42 Td (One-to-Many with team tasks) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 414.00 250.42 Td (User credentials & RBAC authorization) Tj ET
+1.000 1.000 1.000 rg 0.820 0.850 0.900 RG 0.50 w 44.00 229.42 507.28 16.00 re B
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 49.00 234.42 Td (company_profiles) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 134.00 234.42 Td (id, company_name, turnover, equipment, ..) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 294.00 234.42 Td (Root enterprise entity) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 414.00 234.42 Td (Bidder corporate qualifications pro..) Tj ET
+0.970 0.980 0.990 rg 0.820 0.850 0.900 RG 0.50 w 44.00 213.42 507.28 16.00 re B
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 49.00 218.42 Td (tenders) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 134.00 218.42 Td (id, title, value, EMD, deadline, status..) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 294.00 218.42 Td (1:M clauses, amendments, che..) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 414.00 218.42 Td (Primary tender records with AI scores) Tj ET
+1.000 1.000 1.000 rg 0.820 0.850 0.900 RG 0.50 w 44.00 197.42 507.28 16.00 re B
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 49.00 202.42 Td (tender_clauses) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 134.00 202.42 Td (id, tender_id, category, clause_text, s..) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 294.00 202.42 Td (FK -> tenders.id \(cascade de..) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 414.00 202.42 Td (Extracted clauses with PASS/FAIL st..) Tj ET
+0.970 0.980 0.990 rg 0.820 0.850 0.900 RG 0.50 w 44.00 181.42 507.28 16.00 re B
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 49.00 186.42 Td (tender_amendments) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 134.00 186.42 Td (id, tender_id, title, changes_summary, ..) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 294.00 186.42 Td (FK -> tenders.id \(cascade de..) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 414.00 186.42 Td (Corrigendum documents & diff logs) Tj ET
+1.000 1.000 1.000 rg 0.820 0.850 0.900 RG 0.50 w 44.00 165.42 507.28 16.00 re B
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 49.00 170.42 Td (document_checklists) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 134.00 170.42 Td (id, tender_id, document_name, status, v..) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 294.00 170.42 Td (FK -> tenders.id \(cascade de..) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 414.00 170.42 Td (Mandatory submission files & vault ..) Tj ET
+0.970 0.980 0.990 rg 0.820 0.850 0.900 RG 0.50 w 44.00 149.42 507.28 16.00 re B
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 49.00 154.42 Td (vault_documents) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 134.00 154.42 Td (id, document_name, category, file_path,..) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 294.00 154.42 Td (Corporate asset repository) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 414.00 154.42 Td (Reusable credentials & expiration d..) Tj ET
+1.000 1.000 1.000 rg 0.820 0.850 0.900 RG 0.50 w 44.00 133.42 507.28 16.00 re B
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 49.00 138.42 Td (team_tasks) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 134.00 138.42 Td (id, tender_id, title, assignee, status) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 294.00 138.42 Td (FK -> tenders.id \(cascade de..) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 414.00 138.42 Td (Collaborative bid prep tasks) Tj ET
+0.240 0.350 0.720 rg 44.00 113.42 4.00 16.00 re f
+BT /F2 12.0 Tf 0.080 0.160 0.320 rg 54.00 117.42 Td (5. COMPLETE REST API ENDPOINT MATRIX) Tj ET
+0.820 0.850 0.900 rg 44.00 109.42 507.28 0.80 re f
+0.820 0.850 0.900 rg 44.00 809.89 507.28 1.00 re f
+BT /F2 7.5 Tf 0.400 0.440 0.500 rg 44.00 815.89 Td (AI-BASED TENDER INTELLIGENCE & BID MANAGEMENT PLATFORM) Tj ET
+BT /F1 7.5 Tf 0.400 0.440 0.500 rg 371.28 815.89 Td (TECHNICAL & FUNCTIONAL SPECIFICATION) Tj ET
+0.820 0.850 0.900 rg 44.00 36.00 507.28 1.00 re f
+BT /F1 7.0 Tf 0.400 0.440 0.500 rg 44.00 24.00 Td (CONFIDENTIAL & PROPRIETARY -- FOR BACKEND & ML ENGINEERING TEAMS) Tj ET
+BT /F2 7.5 Tf 0.080 0.160 0.320 rg 511.28 24.00 Td (Page 3) Tj ET
+endstream
+endobj
+12 0 obj
+<< /Length 13093 >>
+stream
+0.080 0.160 0.320 rg 0.240 0.350 0.720 RG 0.80 w 44.00 775.89 507.28 18.00 re B
+BT /F2 7.5 Tf 1.000 1.000 1.000 rg 49.00 781.89 Td (Method) Tj ET
+BT /F2 7.5 Tf 1.000 1.000 1.000 rg 94.00 781.89 Td (Endpoint Route) Tj ET
+BT /F2 7.5 Tf 1.000 1.000 1.000 rg 269.00 781.89 Td (Function / Payload) Tj ET
+BT /F2 7.5 Tf 1.000 1.000 1.000 rg 474.00 781.89 Td (Owner) Tj ET
+0.970 0.980 0.990 rg 0.820 0.850 0.900 RG 0.50 w 44.00 759.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 764.89 Td (POST) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 764.89 Td (/api/auth/register) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 764.89 Td (User signup \(username, email, password, role\)) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 764.89 Td (Backend) Tj ET
+1.000 1.000 1.000 rg 0.820 0.850 0.900 RG 0.50 w 44.00 743.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 748.89 Td (POST) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 748.89 Td (/api/auth/login) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 748.89 Td (User login, issues JWT access_token) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 748.89 Td (Backend) Tj ET
+0.970 0.980 0.990 rg 0.820 0.850 0.900 RG 0.50 w 44.00 727.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 732.89 Td (GET) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 732.89 Td (/api/auth/me) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 732.89 Td (Fetch current authenticated user context) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 732.89 Td (Backend) Tj ET
+1.000 1.000 1.000 rg 0.820 0.850 0.900 RG 0.50 w 44.00 711.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 716.89 Td (GET) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 716.89 Td (/api/profile) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 716.89 Td (Retrieve company profile parameters) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 716.89 Td (Backend) Tj ET
+0.970 0.980 0.990 rg 0.820 0.850 0.900 RG 0.50 w 44.00 695.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 700.89 Td (PUT) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 700.89 Td (/api/profile) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 700.89 Td (Update profile & trigger tender re-scoring) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 700.89 Td (Backend + ML) Tj ET
+1.000 1.000 1.000 rg 0.820 0.850 0.900 RG 0.50 w 44.00 679.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 684.89 Td (GET) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 684.89 Td (/api/tenders) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 684.89 Td (List all analyzed tenders with risk & match scores) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 684.89 Td (Backend) Tj ET
+0.970 0.980 0.990 rg 0.820 0.850 0.900 RG 0.50 w 44.00 663.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 668.89 Td (POST) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 668.89 Td (/api/tenders/upload) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 668.89 Td (Upload PDF -> triggers OCR, extraction & audit) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 668.89 Td (Backend + ML) Tj ET
+1.000 1.000 1.000 rg 0.820 0.850 0.900 RG 0.50 w 44.00 647.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 652.89 Td (GET) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 652.89 Td (/api/tenders/{id}) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 652.89 Td (Full tender details, clauses, risks, checklists) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 652.89 Td (Backend) Tj ET
+0.970 0.980 0.990 rg 0.820 0.850 0.900 RG 0.50 w 44.00 631.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 636.89 Td (DELETE) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 636.89 Td (/api/tenders/{id}) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 636.89 Td (Delete tender record, PDF file & vector embeddings) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 636.89 Td (Backend) Tj ET
+1.000 1.000 1.000 rg 0.820 0.850 0.900 RG 0.50 w 44.00 615.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 620.89 Td (GET) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 620.89 Td (/api/tenders/discovery) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 620.89 Td (Query open tenders with keyword/dept/value filters) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 620.89 Td (Backend) Tj ET
+0.970 0.980 0.990 rg 0.820 0.850 0.900 RG 0.50 w 44.00 599.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 604.89 Td (PUT) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 604.89 Td (/api/tenders/{id}/bookmark) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 604.89 Td (Toggle pinned/saved state in catalog) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 604.89 Td (Backend) Tj ET
+1.000 1.000 1.000 rg 0.820 0.850 0.900 RG 0.50 w 44.00 583.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 588.89 Td (GET) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 588.89 Td (/api/tenders/saved) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 588.89 Td (Fetch all bookmarked/pinned tenders) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 588.89 Td (Backend) Tj ET
+0.970 0.980 0.990 rg 0.820 0.850 0.900 RG 0.50 w 44.00 567.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 572.89 Td (POST) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 572.89 Td (/api/tenders/{id}/chat) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 572.89 Td (RAG Q&A over tender specifications) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 572.89 Td (ML Engine) Tj ET
+1.000 1.000 1.000 rg 0.820 0.850 0.900 RG 0.50 w 44.00 551.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 556.89 Td (POST) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 556.89 Td (/api/tenders/{id}/amendment) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 556.89 Td (Upload corrigendum PDF & generate diff log) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 556.89 Td (Backend + ML) Tj ET
+0.970 0.980 0.990 rg 0.820 0.850 0.900 RG 0.50 w 44.00 535.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 540.89 Td (PUT) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 540.89 Td (/api/tenders/{id}/checklist/{item}) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 540.89 Td (Update document upload/vault status) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 540.89 Td (Backend) Tj ET
+1.000 1.000 1.000 rg 0.820 0.850 0.900 RG 0.50 w 44.00 519.89 507.28 16.00 re B
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 49.00 524.89 Td (GET) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 94.00 524.89 Td (/api/tenders/{id}/similar) Tj ET
+BT /F1 7.0 Tf 0.120 0.140 0.180 rg 269.00 524.89 Td (Retrieve top-k similar historical tenders) Tj ET
+BT /F2 7.0 Tf 0.240 0.350 0.720 rg 474.00 524.89 Td (ML Engine) Tj ET
+0.240 0.350 0.720 rg 44.00 499.89 4.00 16.00 re f
+BT /F2 12.0 Tf 0.080 0.160 0.320 rg 54.00 503.89 Td (6. PLATFORM CAPABILITIES SUMMARY) Tj ET
+0.820 0.850 0.900 rg 44.00 495.89 507.28 0.80 re f
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 485.89 Td (The AI-Based Tender Intelligence Platform delivers end-to-end automation across the bidding lifecycle through 6) Tj ET
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 474.41 Td (core pillars:) Tj ET
+0.240 0.350 0.720 rg 54.00 461.94 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 459.94 Td (1. Automated Ingestion & Parsing: Converts multi-hundred page tender PDFs into clean structured data in seconds,) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 459.94 Td (1. Automated Ingestion & Parsing:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 449.14 Td (replacing tedious manual reading.) Tj ET
+0.240 0.350 0.720 rg 54.00 438.84 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 436.84 Td (2. Explainable Eligibility Scoring: Compares company turnover, machinery, and past contracts against tender rules) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 436.84 Td (2. Explainable Eligibility Scoring:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 426.04 Td (with clause-by-clause PASS/FAIL justifications.) Tj ET
+0.240 0.350 0.720 rg 54.00 415.74 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 413.74 Td (3. Risk Intelligence & Threat Auditing: Detects penalty clauses, defect liability traps, and liquidity blockages) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 413.74 Td (3. Risk Intelligence & Threat Auditing:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 402.94 Td (before management commits resources.) Tj ET
+0.240 0.350 0.720 rg 54.00 392.64 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 390.64 Td (4. Decision Support & Action Plans: Computes Suitability Indices, issues definitive Go/No-Go recommendations, and) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 390.64 Td (4. Decision Support & Action Plans:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 379.84 Td (generates step-by-step deficiency checklists.) Tj ET
+0.240 0.350 0.720 rg 54.00 369.54 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 367.54 Td (5. Corrigenda & Contradiction Tracking: Flags internal document contradictions and auto-diffs amendments to prevent) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 367.54 Td (5. Corrigenda & Contradiction Tracking:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 356.74 Td (missing revised deadlines or lower EMDs.) Tj ET
+0.240 0.350 0.720 rg 54.00 346.44 3.00 3.00 re f
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 344.44 Td (6. RAG Q&A & Proposal Synthesis: Empowers bid managers to query specifications via conversational AI and auto-draft) Tj ET
+BT /F2 8.0 Tf 0.080 0.160 0.320 rg 62.00 344.44 Td (6. RAG Q&A & Proposal Synthesis:) Tj ET
+BT /F1 8.0 Tf 0.120 0.140 0.180 rg 62.00 333.64 Td (qualification proposals.) Tj ET
+0.240 0.350 0.720 rg 44.00 309.34 4.00 16.00 re f
+BT /F2 12.0 Tf 0.080 0.160 0.320 rg 54.00 313.34 Td (7. ENGINEERING IMPLEMENTATION CHECKLIST POINTS) Tj ET
+0.820 0.850 0.900 rg 44.00 305.34 507.28 0.80 re f
+BT /F1 8.5 Tf 0.120 0.140 0.180 rg 44.00 295.34 Td (Use the following actionable checklist points to track development progress across teams:) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 276.86 Td (7.1 Machine Learning & AI Engineering Checklist) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 261.86 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 260.86 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 263.36 Td (ML-01) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 262.86 Td (PDF Ingestion & OCR Pipeline) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 251.36 Td (Implement dual-mode parser: direct text extraction via pdfplumber + fallback OCR via pytesseract/pdf2image for) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 239.86 Td (scanned documents.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 224.36 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 223.36 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 225.86 Td (ML-02) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 225.36 Td (Deterministic Schema Extractor) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 213.86 Td (Configure Gemini 1.5 Flash with strict JSON Schema output mode to reliably extract title, value, EMD,) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 202.36 Td (deadlines, clauses, and risks.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 186.86 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 185.86 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 188.36 Td (ML-03) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 187.86 Td (Extraction Confidence Scorer) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 176.36 Td (Implement extraction confidence score computation \(0.0 to 1.0\) based on token probability or model) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 164.86 Td (self-evaluation.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 149.36 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 148.36 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 150.86 Td (ML-04) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 150.36 Td (Clause Classification System) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 138.86 Td (Automatically classify extracted clauses into Financial, Experience, Technical/Machinery, and Documentation) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 127.36 Td (categories.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 111.86 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 110.86 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 113.36 Td (ML-05) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 112.86 Td (Deterministic Eligibility Matcher) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 101.36 Td (Build comparison logic matching company turnover, max completed project value, and experience years against) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 89.86 Td (criteria.) Tj ET
+0.820 0.850 0.900 rg 44.00 809.89 507.28 1.00 re f
+BT /F2 7.5 Tf 0.400 0.440 0.500 rg 44.00 815.89 Td (AI-BASED TENDER INTELLIGENCE & BID MANAGEMENT PLATFORM) Tj ET
+BT /F1 7.5 Tf 0.400 0.440 0.500 rg 371.28 815.89 Td (TECHNICAL & FUNCTIONAL SPECIFICATION) Tj ET
+0.820 0.850 0.900 rg 44.00 36.00 507.28 1.00 re f
+BT /F1 7.0 Tf 0.400 0.440 0.500 rg 44.00 24.00 Td (CONFIDENTIAL & PROPRIETARY -- FOR BACKEND & ML ENGINEERING TEAMS) Tj ET
+BT /F2 7.5 Tf 0.080 0.160 0.320 rg 511.28 24.00 Td (Page 4) Tj ET
+endstream
+endobj
+13 0 obj
+<< /Length 10311 >>
+stream
+0.240 0.350 0.720 RG 1.00 w 48.00 792.89 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 791.89 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 794.39 Td (ML-06) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 793.89 Td (Equipment & Machinery Matcher) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 782.39 Td (Implement regex & NLP parser to match required plant machinery against company asset inventory \(checking) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 770.89 Td (quantity and owned vs leased\).) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 755.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 754.39 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 756.89 Td (ML-07) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 756.39 Td (Weighted Scoring Engine) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 744.89 Td (Implement composite eligibility formula \(35% Financial, 30% Experience, 20% Documentation, 15% Technical\).) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 729.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 728.39 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 730.89 Td (ML-08) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 730.39 Td (Suitability & Go/No-Go Engine) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 718.89 Td (Implement Suitability rating \(profitability, competition, difficulty, distance\) and Go/No-Go decision logic) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 707.39 Td (with rationale.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 691.89 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 690.89 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 693.39 Td (ML-09) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 692.89 Td (Dynamic Action Plan Generator) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 681.39 Td (Generate prioritized step-by-step action items dynamically derived from failed clauses and missing checklist) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 669.89 Td (documents.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 654.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 653.39 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 655.89 Td (ML-10) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 655.39 Td (Contradiction & Pre-Bid Assistant) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 643.89 Td (Develop cross-clause contradiction detector and generate structured pre-bid clarification questionnaires.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 628.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 627.39 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 629.89 Td (ML-11) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 629.39 Td (Corrigendum Diff Engine) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 617.89 Td (Implement semantic diff between original tender and addendum PDFs; extract revised submission deadlines and) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 606.39 Td (revised EMDs.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 590.89 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 589.89 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 592.39 Td (ML-12) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 591.89 Td (Vector Store & RAG Chatbot) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 580.39 Td (Set up text-embedding-004 vector indexing, hybrid top-k chunk retrieval, cosine similarity search, and cited) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 568.89 Td (RAG answers.) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 550.39 Td (7.2 Backend Engineering Checklist) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 535.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 534.39 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 536.89 Td (BE-01) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 536.39 Td (Database Schema & Migrations) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 524.89 Td (Set up SQLAlchemy models \(Users, CompanyProfile, Tenders, Clauses, Amendments, Checklists, Vault, Tasks\) with) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 513.39 Td (Alembic migrations.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 497.89 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 496.89 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 499.39 Td (BE-02) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 498.89 Td (Authentication & Security) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 487.39 Td (Implement bcrypt password hashing, JWT access token generation, authentication middleware, and RBAC role) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 475.89 Td (validation.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 460.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 459.39 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 461.89 Td (BE-03) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 461.39 Td (Company Profile Endpoints) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 449.89 Td (Build GET and PUT /api/profile endpoints; attach async event hook to recalculate eligibility across active) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 438.39 Td (tenders on update.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 422.89 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 421.89 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 424.39 Td (BE-04) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 423.89 Td (Multipart Tender Upload API) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 412.39 Td (Implement POST /api/tenders/upload; handle file storage, async parser queuing, and atomic DB transaction) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 400.89 Td (commits.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 385.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 384.39 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 386.89 Td (BE-05) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 386.39 Td (Tender Catalog & Cascade Delete) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 374.89 Td (Implement GET /api/tenders, GET /api/tenders/{id}, and DELETE /api/tenders/{id} with cascade deletion of files) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 363.39 Td (and vectors.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 347.89 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 346.89 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 349.39 Td (BE-06) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 348.89 Td (Tender Discovery & Search) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 337.39 Td (Build GET /api/tenders/discovery with keyword search, department filtering, and contract value range filters.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 321.89 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 320.89 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 323.39 Td (BE-07) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 322.89 Td (Bookmark / Pinning Logic) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 311.39 Td (Implement PUT /api/tenders/{id}/bookmark; auto-import discovery placeholder tenders into the permanent) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 299.89 Td (catalog.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 284.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 283.39 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 285.89 Td (BE-08) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 285.39 Td (Corrigendum Ingestion API) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 273.89 Td (Build POST /api/tenders/{id}/amendment; trigger ML diff engine and automatically update parent tender deadline) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 262.39 Td (and EMD fields.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 246.89 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 245.89 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 248.39 Td (BE-09) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 247.89 Td (Document Checklist Pipeline) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 236.39 Td (Implement PUT /api/tenders/{id}/checklist/{item_id}; re-calculate bid_readiness_score upon status updates.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 220.89 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 219.89 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 222.39 Td (BE-10) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 221.89 Td (Vault Matching Automation) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 210.39 Td (Cross-check checklist requirements against vault documents; auto-set status to 'vault_matched' when valid) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 198.89 Td (certificates exist.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 183.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 182.39 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 184.89 Td (BE-11) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 184.39 Td (Team Collaboration Tasks) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 172.89 Td (Implement task creation, assignment, and status toggle endpoints; build immutable audit log for tender) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 161.39 Td (actions.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 145.89 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 144.89 34.00 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 147.39 Td (BE-12) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 100.00 146.89 Td (CORS, Validation & Docs) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 135.39 Td (Configure CORS middleware for frontend origins, Pydantic v2 request/response validation, and Swagger UI at) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 123.89 Td (/docs.) Tj ET
+BT /F2 10.5 Tf 0.240 0.350 0.720 rg 44.00 105.39 Td (7.3 DevOps, Infrastructure & Testing Checklist) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 90.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 89.39 39.20 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 91.89 Td (OPS-01) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 105.20 91.39 Td (Environment Configuration) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 79.89 Td (Set up .env configuration with GEMINI_API_KEY, SECRET_KEY, DATABASE_URL, and UPLOAD_DIR settings.) Tj ET
+0.820 0.850 0.900 rg 44.00 809.89 507.28 1.00 re f
+BT /F2 7.5 Tf 0.400 0.440 0.500 rg 44.00 815.89 Td (AI-BASED TENDER INTELLIGENCE & BID MANAGEMENT PLATFORM) Tj ET
+BT /F1 7.5 Tf 0.400 0.440 0.500 rg 371.28 815.89 Td (TECHNICAL & FUNCTIONAL SPECIFICATION) Tj ET
+0.820 0.850 0.900 rg 44.00 36.00 507.28 1.00 re f
+BT /F1 7.0 Tf 0.400 0.440 0.500 rg 44.00 24.00 Td (CONFIDENTIAL & PROPRIETARY -- FOR BACKEND & ML ENGINEERING TEAMS) Tj ET
+BT /F2 7.5 Tf 0.080 0.160 0.320 rg 511.28 24.00 Td (Page 5) Tj ET
+endstream
+endobj
+14 0 obj
+<< /Length 2666 >>
+stream
+0.240 0.350 0.720 RG 1.00 w 48.00 792.89 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 791.89 39.20 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 794.39 Td (OPS-02) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 105.20 793.89 Td (Background Worker Queue) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 782.39 Td (Configure Celery/Redis or FastAPI BackgroundTasks for asynchronous long-running PDF parsing jobs.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 766.89 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 765.89 39.20 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 768.39 Td (OPS-03) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 105.20 767.89 Td (Automated Unit Tests) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 756.39 Td (Write automated tests asserting eligibility score calculations, Go/No-Go branch logic, and action plan) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 744.89 Td (generation.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 729.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 728.39 39.20 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 730.89 Td (OPS-04) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 105.20 730.39 Td (API Integration Tests) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 718.89 Td (Implement pytest suite testing Auth lifecycle, tender upload, checklist updates, and RAG chat endpoints.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 703.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 702.39 39.20 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 704.89 Td (OPS-05) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 105.20 704.39 Td (RAG Accuracy & Benchmark) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 692.89 Td (Establish a precision/recall evaluation script over 10 sample tender queries to verify citation accuracy.) Tj ET
+0.240 0.350 0.720 RG 1.00 w 48.00 677.39 9.00 9.00 re S
+0.900 0.930 0.980 rg 62.00 676.39 39.20 11.00 re f
+BT /F2 6.5 Tf 0.240 0.350 0.720 rg 66.00 678.89 Td (OPS-06) Tj ET
+BT /F2 8.5 Tf 0.080 0.160 0.320 rg 105.20 678.39 Td (Production Deployment) Tj ET
+BT /F1 8.0 Tf 0.400 0.440 0.500 rg 66.00 666.89 Td (Prepare Dockerfile multi-stage builds and docker-compose configurations for FastAPI, PostgreSQL, and Redis.) Tj ET
+0.820 0.850 0.900 rg 44.00 809.89 507.28 1.00 re f
+BT /F2 7.5 Tf 0.400 0.440 0.500 rg 44.00 815.89 Td (AI-BASED TENDER INTELLIGENCE & BID MANAGEMENT PLATFORM) Tj ET
+BT /F1 7.5 Tf 0.400 0.440 0.500 rg 371.28 815.89 Td (TECHNICAL & FUNCTIONAL SPECIFICATION) Tj ET
+0.820 0.850 0.900 rg 44.00 36.00 507.28 1.00 re f
+BT /F1 7.0 Tf 0.400 0.440 0.500 rg 44.00 24.00 Td (CONFIDENTIAL & PROPRIETARY -- FOR BACKEND & ML ENGINEERING TEAMS) Tj ET
+BT /F2 7.5 Tf 0.080 0.160 0.320 rg 511.28 24.00 Td (Page 6) Tj ET
+endstream
+endobj
+15 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+16 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+17 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding >>
+endobj
+xref
+0 18
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000145 00000 n 
+0000000300 00000 n 
+0000000456 00000 n 
+0000000612 00000 n 
+0000000768 00000 n 
+0000000924 00000 n 
+0000001080 00000 n 
+0000010248 00000 n 
+0000021312 00000 n 
+0000032919 00000 n 
+0000046065 00000 n 
+0000056429 00000 n 
+0000059147 00000 n 
+0000059245 00000 n 
+0000059348 00000 n 
+trailer
+<< /Size 18 /Root 1 0 R >>
+startxref
+59454
+%%EOF

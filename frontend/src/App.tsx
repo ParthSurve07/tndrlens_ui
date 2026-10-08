@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Landing } from './pages/Landing';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
-import { TenderDetails } from './pages/TenderDetails';
+import { TenderDetailsRedesigned as TenderDetails } from './pages/TenderDetailsRedesigned';
 import { CompanyProfile } from './pages/CompanyProfile';
 import { AnalyticsDashboard } from './pages/Analytics';
 import { TeamCollaboration } from './pages/Team';
-import { SettingsPanel } from './pages/HelperPages';
+import { SettingsPanel } from './pages/SettingsPanel';
 import { api, type Tender } from './services/api';
 import { Search, Bell, Monitor, Keyboard, User, Plus, PenTool, ChevronDown, Check } from 'lucide-react';
 
@@ -31,77 +31,39 @@ export interface PresetColors {
 }
 
 export const THEME_PRESETS: Record<string, PresetColors> = {
-  'executive-blue': {
-    primary: '#2563EB', secondary: '#475569', accent: '#3B82F6',
-    bg: '#0F172A', surface: '#111827', card: '#1E293B', border: '#334155',
-    text: '#F8FAFC', muted: '#94A3B8', hover: '#1D4ED8',
-    success: '#10B981', warning: '#F59E0B', danger: '#EF4444'
+  "dark-professional": {
+    primary: "#4F46E5", secondary: "#334155", accent: "#818CF8",
+    bg: "#0B1120", surface: "#111827", card: "#1E293B", border: "#334155",
+    text: "#F8FAFC", muted: "#94A3B8", hover: "#6366F1",
+    success: "#10B981", warning: "#F59E0B", danger: "#EF4444"
   },
-  'midnight-black': {
-    primary: '#FAFAFA', secondary: '#27272A', accent: '#E4E4E7',
-    bg: '#09090B', surface: '#121214', card: '#18181B', border: '#27272A',
-    text: '#F4F4F5', muted: '#A1A1AA', hover: '#FFFFFF',
-    success: '#10B981', warning: '#F59E0B', danger: '#EF4444'
+  "light-professional": {
+    primary: "#2563EB", secondary: "#E2E8F0", accent: "#2563EB",
+    bg: "#F8FAFC", surface: "#FFFFFF", card: "#F1F5F9", border: "#CBD5E1",
+    text: "#0F172A", muted: "#475569", hover: "#1D4ED8",
+    success: "#047857", warning: "#B45309", danger: "#B91C1C"
   },
-  'forest-green': {
-    primary: '#10B981', secondary: '#047857', accent: '#34D399',
-    bg: '#022C22', surface: '#064E3B', card: '#064E3B', border: '#115E59',
-    text: '#F0FDF4', muted: '#A7F3D0', hover: '#059669',
-    success: '#10B981', warning: '#F59E0B', danger: '#EF4444'
-  },
-  'graphite-gray': {
-    primary: '#E4E4E7', secondary: '#52525B', accent: '#D4D4D8',
-    bg: '#18181B', surface: '#202023', card: '#27272A', border: '#3F3F46',
-    text: '#FAFAFA', muted: '#A1A1AA', hover: '#FFFFFF',
-    success: '#10B981', warning: '#F59E0B', danger: '#EF4444'
-  },
-  'royal-purple': {
-    primary: '#8B5CF6', secondary: '#6D28D9', accent: '#A78BFA',
-    bg: '#1E1B4B', surface: '#2D2654', card: '#2D2654', border: '#4C1D95',
-    text: '#F5F3FF', muted: '#DDD6FE', hover: '#7C3AED',
-    success: '#10B981', warning: '#F59E0B', danger: '#EF4444'
-  },
-  'carbon-dark': {
-    primary: '#FFFFFF', secondary: '#262626', accent: '#D4D4D8',
-    bg: '#0A0A0A', surface: '#141414', card: '#1C1C1C', border: '#262626',
-    text: '#F5F5F5', muted: '#A3A3A3', hover: '#E5E5E5',
-    success: '#10B981', warning: '#F59E0B', danger: '#EF4444'
-  },
-  'arctic-white': {
-    primary: '#1F2937', secondary: '#E5E7EB', accent: '#4B5563',
-    bg: '#F9FAFB', surface: '#FFFFFF', card: '#FFFFFF', border: '#E5E7EB',
-    text: '#111827', muted: '#6B7280', hover: '#374151',
-    success: '#10B981', warning: '#F59E0B', danger: '#EF4444'
-  },
-  'azure-enterprise': {
-    primary: '#0052CC', secondary: '#DFE1E6', accent: '#0065FF',
-    bg: '#FAFBFC', surface: '#FFFFFF', card: '#FFFFFF', border: '#DFE1E6',
-    text: '#172B4D', muted: '#5E6C84', hover: '#0047B3',
-    success: '#10B981', warning: '#F59E0B', danger: '#EF4444'
-  },
-  'emerald-pro': {
-    primary: '#059669', secondary: '#D1FAE5', accent: '#10B981',
-    bg: '#F0FDF4', surface: '#FFFFFF', card: '#FFFFFF', border: '#D1FAE5',
-    text: '#065F46', muted: '#047857', hover: '#047857',
-    success: '#10B981', warning: '#F59E0B', danger: '#EF4444'
-  },
-  'crimson-executive': {
-    primary: '#DC2626', secondary: '#FEE2E2', accent: '#EF4444',
-    bg: '#FEF2F2', surface: '#FFFFFF', card: '#FFFFFF', border: '#FEE2E2',
-    text: '#991B1B', muted: '#B91C1C', hover: '#B91C1C',
-    success: '#10B981', warning: '#F59E0B', danger: '#EF4444'
+  "graphite-gray": {
+    primary: "#A1A1AA", secondary: "#3F3F46", accent: "#A1A1AA",
+    bg: "#18181B", surface: "#202023", card: "#27272A", border: "#3F3F46",
+    text: "#FAFAFA", muted: "#A1A1AA", hover: "#D4D4D8",
+    success: "#34D399", warning: "#FBBF24", danger: "#F87171"
   }
 };
 
 function App() {
-  const [page, setPage] = useState<PageState>('landing');
+  const [page, setPage] = useState<PageState>(() => new URLSearchParams(window.location.search).has('invite') ? 'register' : 'landing');
   const [tab, setTab] = useState<string>('dashboard');
+  const [settingsSection, setSettingsSection] = useState<'appearance' | 'account'>('appearance');
+  const [, refreshSidebarAccount] = useState(0);
   const [selectedTenderId, setSelectedTenderId] = useState<number | null>(null);
   const [pinnedTenders, setPinnedTenders] = useState<Tender[]>([]);
 
   // Design Tokens States
-  const [preset, setPreset] = useState<string>(localStorage.getItem('ds-preset') || 'executive-blue');
-  const [themeMode, setThemeMode] = useState<string>(localStorage.getItem('ds-mode') || 'dark-pro');
+  const storedPreset = localStorage.getItem('ds-preset');
+  const [preset, setPreset] = useState<string>(storedPreset && storedPreset in THEME_PRESETS ? storedPreset : 'dark-professional');
+  const storedThemeMode = localStorage.getItem('ds-mode');
+  const [themeMode, setThemeMode] = useState<string>(storedThemeMode && storedThemeMode in THEME_PRESETS ? storedThemeMode : 'dark-professional');
   const [fontFamily, setFontFamily] = useState<string>(localStorage.getItem('ds-font') || 'Inter');
   const [fontWeight, setFontWeight] = useState<string>(localStorage.getItem('ds-weight') || '500');
   const [letterSpacing, setLetterSpacing] = useState<string>(localStorage.getItem('ds-spacing') || 'normal');
@@ -129,6 +91,40 @@ function App() {
   const [showPalette, setShowPalette] = useState(false);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   const [showFloatingMenu, setShowFloatingMenu] = useState(false);
+
+  // Refs for click outside handling
+  const workspaceRef = useRef<HTMLDivElement>(null);
+  const themeMenuRef = useRef<HTMLDivElement>(null);
+  const notificationMenuRef = useRef<HTMLDivElement>(null);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
+  const floatingMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close menus and dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (workspaceRef.current && !workspaceRef.current.contains(target)) {
+        setShowWorkspaceMenu(false);
+      }
+      if (themeMenuRef.current && !themeMenuRef.current.contains(target)) {
+        setShowThemeMenu(false);
+      }
+      if (notificationMenuRef.current && !notificationMenuRef.current.contains(target)) {
+        setShowNotificationMenu(false);
+      }
+      if (profileMenuRef.current && !profileMenuRef.current.contains(target)) {
+        setShowProfileMenu(false);
+      }
+      if (floatingMenuRef.current && !floatingMenuRef.current.contains(target)) {
+        setShowFloatingMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Shade generator helper
   const generateShades = (hexColor: string) => {
@@ -159,7 +155,7 @@ function App() {
 
   useEffect(() => {
     const root = document.documentElement;
-    const activePreset = THEME_PRESETS[preset] || THEME_PRESETS['executive-blue'];
+    const activePreset = THEME_PRESETS[preset] || THEME_PRESETS['dark-professional'];
 
     root.style.setProperty('--bg-color', activePreset.bg);
     root.style.setProperty('--surface-color', activePreset.surface);
@@ -177,7 +173,12 @@ function App() {
       root.style.setProperty(`--accent-${sh}`, hex);
     });
 
-    root.style.setProperty('--font-family', fontFamily === 'SF Pro' ? '-apple-system, BlinkMacSystemFont' : fontFamily);
+    const selectedFont = fontFamily === 'SF Pro'
+      ? '-apple-system, BlinkMacSystemFont'
+      : fontFamily === 'System UI'
+        ? 'system-ui'
+        : fontFamily;
+    root.style.setProperty('--font-family', selectedFont);
     root.style.setProperty('--font-weight', fontWeight);
     
     const letterSp = letterSpacing === 'tight' ? '-0.02em' : letterSpacing === 'wide' ? '0.04em' : 'normal';
@@ -256,9 +257,18 @@ function App() {
     }
   }, [tab, selectedTenderId]);
 
-  // Global keydown listeners for shortcuts including Ctrl+Shift+P, Ctrl+P, Ctrl+K
+  // Global keydown listeners for shortcuts including Ctrl+Shift+P, Ctrl+P, Ctrl+K and ESC
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowWorkspaceMenu(false);
+        setShowThemeMenu(false);
+        setShowNotificationMenu(false);
+        setShowProfileMenu(false);
+        setShowPalette(false);
+        setShowShortcutsModal(false);
+        setShowFloatingMenu(false);
+      }
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setShowPalette(prev => !prev);
@@ -326,39 +336,28 @@ function App() {
       case 'settings':
         return (
           <SettingsPanel
+            initialSection={settingsSection}
+            activeWorkspace={activeWorkspace}
+            onProfileUpdated={() => refreshSidebarAccount((version) => version + 1)}
             preset={preset}
             setPreset={setPreset}
-            themeMode={themeMode}
             setThemeMode={setThemeMode}
             fontFamily={fontFamily}
             setFontFamily={setFontFamily}
-            fontWeight={fontWeight}
             setFontWeight={setFontWeight}
-            letterSpacing={letterSpacing}
             setLetterSpacing={setLetterSpacing}
-            lineHeight={lineHeight}
             setLineHeight={setLineHeight}
-            componentStyle={componentStyle}
             setComponentStyle={setComponentStyle}
-            animationSpeed={animationSpeed}
             setAnimationSpeed={setAnimationSpeed}
-            sidebarStyle={sidebarStyle}
             setSidebarStyle={setSidebarStyle}
-            cardStyle={cardStyle}
             setCardStyle={setCardStyle}
-            buttonStyle={buttonStyle}
             setButtonStyle={setButtonStyle}
-            iconStyle={iconStyle}
             setIconStyle={setIconStyle}
             density={density}
             setDensity={setDensity}
-            customPrimary={customPrimary}
             setCustomPrimary={setCustomPrimary}
-            customBg={customBg}
             setCustomBg={setCustomBg}
-            customSurface={customSurface}
             setCustomSurface={setCustomSurface}
-            customText={customText}
             setCustomText={setCustomText}
           />
         );
@@ -392,6 +391,7 @@ function App() {
       <Register
         onRegisterSuccess={() => setPage('login')}
         onGoToLogin={() => setPage('login')}
+        inviteToken={new URLSearchParams(window.location.search).get('invite') || undefined}
       />
     );
   }
@@ -402,9 +402,15 @@ function App() {
         currentTab={tab}
         setCurrentTab={(newTab) => {
           setTab(newTab);
+          if (newTab === 'settings') setSettingsSection('appearance');
           if (newTab !== 'tenders') {
             setSelectedTenderId(null);
           }
+        }}
+        onAccountClick={() => {
+          setSettingsSection('account');
+          setTab('settings');
+          setSelectedTenderId(null);
         }}
         onLogout={handleLogout}
         pinnedTenders={pinnedTenders}
@@ -417,7 +423,7 @@ function App() {
         {/* Top Header */}
         <header className="sticky top-0 z-30 h-16 bg-surface border-b border-slate-border flex items-center justify-between px-8 shrink-0 select-none">
           <div className="flex items-center gap-6">
-            <div className="relative">
+            <div ref={workspaceRef} className="relative">
               <button
                 onClick={() => setShowWorkspaceMenu(!showWorkspaceMenu)}
                 className="flex items-center gap-2 text-xs font-bold text-[#F8FAFC] hover:opacity-80 transition-all"
@@ -456,7 +462,7 @@ function App() {
 
           <div className="flex items-center gap-3">
             {/* Quick theme preset dropdown */}
-            <div className="relative">
+            <div ref={themeMenuRef} className="relative">
               <button
                 onClick={() => setShowThemeMenu(!showThemeMenu)}
                 className="p-2 text-slate-400 hover:text-[#F8FAFC] transition-colors"
@@ -488,7 +494,7 @@ function App() {
               <Keyboard size={15} />
             </button>
 
-            <div className="relative">
+            <div ref={notificationMenuRef} className="relative">
               <button
                 onClick={() => setShowNotificationMenu(!showNotificationMenu)}
                 className="p-2 text-slate-400 hover:text-[#F8FAFC] transition-colors relative"
@@ -514,7 +520,7 @@ function App() {
               Sync
             </span>
 
-            <div className="relative">
+            <div ref={profileMenuRef} className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-indigo-400 cursor-pointer"
@@ -524,9 +530,9 @@ function App() {
               {showProfileMenu && (
                 <div className="absolute top-full right-0 mt-2 w-48 bg-surface border border-slate-border rounded-lg p-1.5 shadow-premium space-y-0.5 z-40 text-xs text-left">
                   <span className="block px-2.5 py-1 text-[10px] text-slate-500 font-bold uppercase tracking-wider">Account Action</span>
-                  <button onClick={() => { setTab('company'); setShowProfileMenu(false); }} className="w-full text-left px-2.5 py-2 rounded-md hover:bg-slate-800 text-[#F8FAFC]">My Profile</button>
-                  <button onClick={() => { setTab('settings'); setShowProfileMenu(false); }} className="w-full text-left px-2.5 py-2 rounded-md hover:bg-slate-800 text-[#F8FAFC]">Appearance</button>
-                  <button onClick={() => { setShowShortcutsModal(true); setShowProfileMenu(false); }} className="w-full text-left px-2.5 py-2 rounded-md hover:bg-slate-800 text-[#F8FAFC]">Keyboard Shortcuts</button>
+                  <button onClick={() => { setTab('company'); setShowProfileMenu(false); }} className="account-menu-item w-full text-left px-2.5 py-2 rounded-md hover:bg-slate-800 text-[#F8FAFC]">My Profile</button>
+                  <button onClick={() => { setTab('settings'); setShowProfileMenu(false); }} className="account-menu-item w-full text-left px-2.5 py-2 rounded-md hover:bg-slate-800 text-[#F8FAFC]">Appearance</button>
+                  <button onClick={() => { setShowShortcutsModal(true); setShowProfileMenu(false); }} className="account-menu-item w-full text-left px-2.5 py-2 rounded-md hover:bg-slate-800 text-[#F8FAFC]">Keyboard Shortcuts</button>
                   <button onClick={handleLogout} className="w-full text-left px-2.5 py-2 rounded-md hover:bg-rose-950/20 text-rose-400 border-t border-slate-border/50 mt-1">Logout</button>
                 </div>
               )}
@@ -543,7 +549,10 @@ function App() {
 
       {/* COMMAND PALETTE MODAL (Ctrl+K) */}
       {showPalette && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-24 select-none">
+        <div
+          onClick={(e) => { if (e.target === e.currentTarget) setShowPalette(false); }}
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-24 select-none"
+        >
           <div className="w-full max-w-xl bg-surface border border-slate-border rounded-xl shadow-premium overflow-hidden text-xs">
             <div className="p-4 border-b border-slate-border flex items-center gap-3">
               <Search className="text-slate-400" size={16} />
@@ -582,7 +591,10 @@ function App() {
 
       {/* KEYBOARD SHORTCUTS INSTRUCTIONS MODAL */}
       {showShortcutsModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center select-none">
+        <div
+          onClick={(e) => { if (e.target === e.currentTarget) setShowShortcutsModal(false); }}
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center select-none"
+        >
           <div className="bg-surface border border-slate-border rounded-xl p-6 w-full max-w-sm shadow-premium text-left text-xs space-y-4">
             <h3 className="font-bold text-[#F8FAFC] border-b border-slate-border pb-2 flex items-center gap-2">
               <Keyboard size={16} className="text-[#6366F1]" /> Keyboard Shortcuts Map
@@ -616,7 +628,7 @@ function App() {
       )}
 
       {/* FLOATING ACTION TOOL HUB */}
-      <div className="fixed bottom-6 right-6 z-40 select-none">
+      <div ref={floatingMenuRef} className="fixed bottom-6 right-6 z-40 select-none">
         {showFloatingMenu && (
           <div className="bg-surface border border-slate-border rounded-xl p-2.5 shadow-premium mb-3 flex flex-col gap-2 text-xs text-left animate-fade-in w-48 bg-card-bg">
             <button onClick={() => { setTab('tenders'); setSelectedTenderId(null); setShowFloatingMenu(false); }} className="flex items-center gap-2 p-2 hover:bg-slate-800 rounded-md text-[#F8FAFC]">

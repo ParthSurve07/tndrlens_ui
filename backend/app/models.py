@@ -12,6 +12,19 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     role = Column(String, default="employee")  # admin, company, manager, employee
 
+class TeamInvitation(Base):
+    __tablename__ = "team_invitations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, index=True, nullable=False)
+    role = Column(String, default="employee", nullable=False)
+    token_hash = Column(String, unique=True, index=True, nullable=False)
+    invited_by_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    accepted_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+    expires_at = Column(DateTime, nullable=False)
+    accepted_at = Column(DateTime, nullable=True)
+
 class CompanyProfile(Base):
     __tablename__ = "company_profiles"
     
@@ -24,6 +37,14 @@ class CompanyProfile(Base):
     certifications = Column(Text, default="")  # Comma-separated or JSON
     equipment = Column(Text, default="")  # Comma-separated or JSON
     manpower_count = Column(Integer, default=0)
+
+class CompanyTenderDetails(Base):
+    __tablename__ = "company_tender_details"
+
+    id = Column(Integer, primary_key=True, index=True)
+    profile_id = Column(Integer, ForeignKey("company_profiles.id"), unique=True, nullable=False)
+    details_json = Column(Text, default="{}", nullable=False)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow, nullable=False)
 
 class Tender(Base):
     __tablename__ = "tenders"

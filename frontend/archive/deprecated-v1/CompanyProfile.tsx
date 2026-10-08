@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { api, type CompanyProfile as ICompanyProfile, type CompanyTenderDetails } from '../services/api';
+import { api, type CompanyProfile as ICompanyProfile } from '../services/api';
 import {
   Building2, Briefcase, Cpu, ShieldCheck, AlertCircle, Trash2, Folder, Search, FileText, Upload,
-  Key, FileCheck, Layers, HardDrive, Users, ClipboardCheck
+  Key, FileCheck, Layers, HardDrive, RefreshCw, Users
 } from 'lucide-react';
 
 interface VaultFile {
@@ -15,23 +15,15 @@ interface VaultFile {
   tags: string[];
 }
 
-const emptyTenderDetails: CompanyTenderDetails = {
-  entityType: '', incorporationNumber: '', udyamNumber: '', epfNumber: '', esiNumber: '',
-  contractorLicenseExpiry: '', turnoverFy1: 0, turnoverFy2: 0, turnoverFy3: 0,
-  workingCapital: 0, bankGuaranteeLimit: 0, emdCapacity: 0, solvencyCertificateExpiry: '',
-  auditFirm: '', authorizedSignatory: '', signatoryDesignation: '', signatoryEmail: '',
-  signatoryPhone: '', dscExpiry: '', completedProjectReferences: '', ongoingCommitments: '',
-  debarmentStatus: 'not-debarred', litigationDisclosure: '',
-};
-
 export const CompanyProfile: React.FC = () => {
   const [, setProfile] = useState<ICompanyProfile | null>(null);
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
   // Workspace sub-tab state
-  const [activeTab, setActiveTab] = useState<'readiness' | 'profile' | 'financials' | 'experience' | 'machinery' | 'engineers' | 'certificates' | 'vault' | 'signatures'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'financials' | 'experience' | 'machinery' | 'engineers' | 'certificates' | 'vault' | 'signatures'>('profile');
 
   // Form states
   const [companyName, setCompanyName] = useState('BuildCorp Infrastructure Ltd.');
@@ -49,7 +41,6 @@ export const CompanyProfile: React.FC = () => {
   const [certifications, setCertifications] = useState('ISO 9001:2015, ISO 14001:2015, ISO 45001:2018');
   const [equipment, setEquipment] = useState('Excavators: 12, Batching Plants: 3, Concrete Pumps: 6, Mobile Cranes: 4');
   const [manpower, setManpower] = useState(250);
-  const [tenderDetails, setTenderDetails] = useState<CompanyTenderDetails>(emptyTenderDetails);
 
   // Vault data
   const [searchTerm, setSearchTerm] = useState('');
@@ -74,13 +65,9 @@ export const CompanyProfile: React.FC = () => {
   ];
 
   const fetchProfile = async () => {
-    setError('');
     try {
-      const [data, readinessDetails] = await Promise.all([
-        api.getProfile(),
-        api.getCompanyTenderDetails().catch(() => ({})),
-      ]);
-      setTenderDetails({ ...emptyTenderDetails, ...readinessDetails });
+      setLoading(true);
+      const data = await api.getProfile();
       setProfile(data);
       if (data.company_name) setCompanyName(data.company_name);
       if (data.turnover) setTurnover(data.turnover);
@@ -90,9 +77,10 @@ export const CompanyProfile: React.FC = () => {
       if (data.certifications) setCertifications(data.certifications);
       if (data.equipment) setEquipment(data.equipment);
       if (data.manpower_count) setManpower(data.manpower_count);
-    } catch {
+    } catch (err: any) {
       console.warn("Could not load backend company profile, fallback active.");
-      setError('Could not connect to the company profile service. Showing the workspace defaults; try again when the backend is available.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -119,9 +107,8 @@ export const CompanyProfile: React.FC = () => {
 
     try {
       const data = await api.updateProfile(updatedProfile);
-      await api.updateCompanyTenderDetails(tenderDetails);
       setProfile(data);
-      setMessage('Company profile and tender-readiness details saved.');
+      setMessage('Company profile workspace parameters successfully synchronized.');
       setTimeout(() => setMessage(''), 4000);
     } catch (err: any) {
       setError(err.message || 'Failed to update workspace profile parameters');
@@ -138,8 +125,15 @@ export const CompanyProfile: React.FC = () => {
     return matchesSearch;
   });
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-24 bg-[#0F172A]">
+        <RefreshCw className="animate-spin text-indigo-500 mb-4" size={32} />
+      </div>
+    );
+  }
+
   const tabsList = [
-    { id: 'readiness', label: 'Tender Readiness', icon: ClipboardCheck },
     { id: 'profile', label: 'Company Profile', icon: Building2 },
     { id: 'financials', label: 'Financials', icon: Layers },
     { id: 'experience', label: 'Experience', icon: Briefcase },
@@ -151,24 +145,24 @@ export const CompanyProfile: React.FC = () => {
   ] as const;
 
   return (
-    <div className="company-workspace space-y-6 text-left">
+    <div className="space-y-8 select-none text-left">
       {/* Page Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#334155] pb-5 shrink-0">
+      <div className="flex items-center justify-between border-b border-[#334155] pb-6 shrink-0">
         <div className="flex items-center gap-3">
           <div className="bg-[#6366F1]/10 border border-[#6366F1]/20 text-[#6366F1] p-2.5 rounded-xl">
             <Building2 size={24} />
           </div>
           <div>
             <h2 className="text-xl font-bold tracking-tight text-[#F8FAFC]">Company Workspace</h2>
-            <p className="text-xs text-[#94A3B8]">Maintain the company details and qualifications used for tender submissions.</p>
+            <p className="text-xs text-[#94A3B8]">Review corporate parameters, audits, and drive files used by AI models for compliance checks</p>
           </div>
         </div>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="company-save-button bg-[#6366F1] hover:bg-indigo-600 text-white rounded-lg px-4 py-2.5 text-sm font-semibold transition-all disabled:opacity-50"
+          className="bg-[#6366F1] hover:bg-indigo-600 text-white rounded-lg px-4 py-2 text-xs font-bold transition-all disabled:opacity-50"
         >
-          {saving ? 'Saving…' : 'Save changes'}
+          {saving ? 'Syncing...' : 'Sync Workspace Data'}
         </button>
       </div>
 
@@ -182,13 +176,12 @@ export const CompanyProfile: React.FC = () => {
       {error && (
         <div className="bg-[#EF4444]/15 border border-[#EF4444]/30 rounded-lg p-4 text-[#EF4444] text-xs flex items-center gap-2">
           <AlertCircle size={16} />
-          <span className="flex-1">{error}</span>
-          <button type="button" onClick={() => void fetchProfile()} className="font-semibold underline underline-offset-2">Retry</button>
+          <span>{error}</span>
         </div>
       )}
 
       {/* Horizontal Tabs Menu */}
-      <div className="company-tab-nav grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-9 gap-1 rounded-xl border border-[#334155] bg-[#111827] p-1.5">
+      <div className="flex gap-2 border-b border-[#334155] pb-px overflow-x-auto">
         {tabsList.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -196,13 +189,13 @@ export const CompanyProfile: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex min-h-10 items-center justify-center gap-2 rounded-lg px-2 py-2 text-xs font-medium leading-tight transition-colors ${
+              className={`flex items-center gap-2 px-4 py-3 text-xs font-semibold whitespace-nowrap transition-all border-b-2 -mb-px ${
                 isActive
-                  ? 'bg-[#6366F1]/10 text-[#6366F1]'
-                  : 'text-[#94A3B8] hover:bg-[#1E293B] hover:text-[#F8FAFC]'
+                  ? 'border-[#6366F1] text-[#6366F1]'
+                  : 'border-transparent text-[#94A3B8] hover:text-[#F8FAFC]'
               }`}
             >
-              <Icon size={15} className="shrink-0" />
+              <Icon size={14} />
               <span>{tab.label}</span>
             </button>
           );
@@ -210,140 +203,57 @@ export const CompanyProfile: React.FC = () => {
       </div>
 
       {/* Tab Panels */}
-      <div className="company-tab-panel bg-[#111827] border border-[#334155] rounded-xl p-6">
-        {activeTab === 'readiness' && (
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-base font-semibold text-[#F8FAFC]">Tender readiness details</h3>
-              <p className="mt-1 max-w-3xl text-xs leading-relaxed text-[#94A3B8]">Keep bid qualifications, compliance declarations, and submission contacts together. These details help your team prepare eligibility responses and supporting documents.</p>
-            </div>
-
-            <section className="space-y-4 border-t border-[#334155] pt-6">
-              <div>
-                <h4 className="text-sm font-semibold text-[#F8FAFC]">Business registrations</h4>
-                <p className="mt-1 text-xs text-[#94A3B8]">Registration identifiers and statutory records commonly requested in tender forms.</p>
-              </div>
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                <div className="company-field-group"><label className="company-field-label">Type of entity</label><select className="company-field" value={tenderDetails.entityType} onChange={(e) => setTenderDetails({ ...tenderDetails, entityType: e.target.value })}><option value="">Select entity type</option><option>Private limited company</option><option>Public limited company</option><option>Partnership</option><option>LLP</option><option>Sole proprietorship</option><option>Joint venture</option></select></div>
-                <div className="company-field-group"><label className="company-field-label">CIN / incorporation number</label><input className="company-field" value={tenderDetails.incorporationNumber} onChange={(e) => setTenderDetails({ ...tenderDetails, incorporationNumber: e.target.value })} placeholder="Company registration number" /></div>
-                <div className="company-field-group"><label className="company-field-label">Udyam / MSME number</label><input className="company-field" value={tenderDetails.udyamNumber} onChange={(e) => setTenderDetails({ ...tenderDetails, udyamNumber: e.target.value })} placeholder="If registered" /></div>
-                <div className="company-field-group"><label className="company-field-label">EPF registration number</label><input className="company-field" value={tenderDetails.epfNumber} onChange={(e) => setTenderDetails({ ...tenderDetails, epfNumber: e.target.value })} /></div>
-                <div className="company-field-group"><label className="company-field-label">ESI registration number</label><input className="company-field" value={tenderDetails.esiNumber} onChange={(e) => setTenderDetails({ ...tenderDetails, esiNumber: e.target.value })} /></div>
-                <div className="company-field-group"><label className="company-field-label">Contractor license expiry</label><input type="date" className="company-field" value={tenderDetails.contractorLicenseExpiry} onChange={(e) => setTenderDetails({ ...tenderDetails, contractorLicenseExpiry: e.target.value })} /></div>
-              </div>
-            </section>
-
-            <section className="space-y-4 border-t border-[#334155] pt-6">
-              <div>
-                <h4 className="text-sm font-semibold text-[#F8FAFC]">Financial capacity</h4>
-                <p className="mt-1 text-xs text-[#94A3B8]">Enter values in ₹ crore and use audited financial statements for the relevant years.</p>
-              </div>
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {([
-                  ['turnoverFy1', 'Turnover · FY 2023–24'], ['turnoverFy2', 'Turnover · FY 2024–25'], ['turnoverFy3', 'Turnover · FY 2025–26'],
-                  ['workingCapital', 'Available working capital'], ['bankGuaranteeLimit', 'Bank guarantee limit'], ['emdCapacity', 'EMD / bid security capacity'],
-                ] as const).map(([key, label]) => <div className="company-field-group" key={key}><label className="company-field-label">{label} (₹ Cr)</label><input type="number" min="0" step="0.01" className="company-field" value={tenderDetails[key]} onChange={(e) => setTenderDetails({ ...tenderDetails, [key]: Number(e.target.value) })} /></div>)}
-                <div className="company-field-group"><label className="company-field-label">Solvency certificate valid until</label><input type="date" className="company-field" value={tenderDetails.solvencyCertificateExpiry} onChange={(e) => setTenderDetails({ ...tenderDetails, solvencyCertificateExpiry: e.target.value })} /></div>
-                <div className="company-field-group md:col-span-2"><label className="company-field-label">Statutory auditor / CA firm</label><input className="company-field" value={tenderDetails.auditFirm} onChange={(e) => setTenderDetails({ ...tenderDetails, auditFirm: e.target.value })} placeholder="Firm name" /></div>
-              </div>
-            </section>
-
-            <section className="space-y-4 border-t border-[#334155] pt-6">
-              <div>
-                <h4 className="text-sm font-semibold text-[#F8FAFC]">Authorized bid contact</h4>
-                <p className="mt-1 text-xs text-[#94A3B8]">Contact and digital-signature details for tender submissions.</p>
-              </div>
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                {([
-                  ['authorizedSignatory', 'Authorized signatory'], ['signatoryDesignation', 'Designation'],
-                  ['signatoryEmail', 'Work email'], ['signatoryPhone', 'Phone number'],
-                ] as const).map(([key, label]) => <div className="company-field-group" key={key}><label className="company-field-label">{label}</label><input type={key === 'signatoryEmail' ? 'email' : 'text'} className="company-field" value={tenderDetails[key]} onChange={(e) => setTenderDetails({ ...tenderDetails, [key]: e.target.value })} /></div>)}
-                <div className="company-field-group"><label className="company-field-label">DSC token expiry</label><input type="date" className="company-field" value={tenderDetails.dscExpiry} onChange={(e) => setTenderDetails({ ...tenderDetails, dscExpiry: e.target.value })} /></div>
-              </div>
-            </section>
-
-            <section className="space-y-4 border-t border-[#334155] pt-6">
-              <div>
-                <h4 className="text-sm font-semibold text-[#F8FAFC]">Experience and declarations</h4>
-                <p className="mt-1 text-xs text-[#94A3B8]">Keep concise references to comparable work and disclose matters asked for in bid documents.</p>
-              </div>
-              <div className="grid gap-4 xl:grid-cols-2">
-                <div className="company-field-group"><label className="company-field-label">Similar completed projects</label><textarea rows={4} className="company-field resize-y" value={tenderDetails.completedProjectReferences} onChange={(e) => setTenderDetails({ ...tenderDetails, completedProjectReferences: e.target.value })} placeholder="One project per line: project, client, value, completion date, certificate reference" /></div>
-                <div className="company-field-group"><label className="company-field-label">Ongoing project commitments</label><textarea rows={4} className="company-field resize-y" value={tenderDetails.ongoingCommitments} onChange={(e) => setTenderDetails({ ...tenderDetails, ongoingCommitments: e.target.value })} placeholder="Project, client, contract value, completion schedule" /></div>
-                <div className="company-field-group"><label className="company-field-label">Debarment / blacklisting status</label><select className="company-field" value={tenderDetails.debarmentStatus} onChange={(e) => setTenderDetails({ ...tenderDetails, debarmentStatus: e.target.value })}><option value="not-debarred">No active debarment declared</option><option value="under-review">Under review</option><option value="debarred">Active debarment</option></select></div>
-                <div className="company-field-group"><label className="company-field-label">Litigation / material disclosures</label><textarea rows={3} className="company-field resize-y" value={tenderDetails.litigationDisclosure} onChange={(e) => setTenderDetails({ ...tenderDetails, litigationDisclosure: e.target.value })} placeholder="Add disclosures requested by the tender authority" /></div>
-              </div>
-            </section>
-          </div>
-        )}
-
+      <div className="bg-[#111827] border border-[#334155] rounded-xl p-8 min-h-[400px]">
         {activeTab === 'profile' && (
-          <div className="space-y-8">
-            <section className="space-y-4">
-              <div className="company-section-heading">
-                <div>
-                  <h3 className="text-base font-semibold text-[#F8FAFC]">Company identity</h3>
-                  <p className="mt-1 text-xs text-[#94A3B8]">Registered business name and contractor classification.</p>
-                </div>
-              </div>
-              <div className="grid gap-x-5 gap-y-4 md:grid-cols-2 xl:grid-cols-3">
-              <div className="company-field-group xl:col-span-2">
-                <label className="company-field-label">Registered company name</label>
+          <div className="space-y-6 max-w-3xl">
+            <h3 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider">Corporate Identity</h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-bold text-[#94A3B8] uppercase">Registered Company Name</label>
                 <input
                   type="text"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
-                  className="company-field"
+                  className="w-full bg-[#1E293B] border border-[#334155] rounded-lg px-3 py-2 text-xs text-[#F8FAFC]"
                 />
               </div>
-              <div className="company-field-group">
-                <label className="company-field-label">Contractor license class</label>
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-bold text-[#94A3B8] uppercase">NHAI License Class</label>
                 <input
                   type="text"
                   value={licenseClass}
                   onChange={(e) => setLicenseClass(e.target.value)}
-                  className="company-field"
+                  className="w-full bg-[#1E293B] border border-[#334155] rounded-lg px-3 py-2 text-xs text-[#F8FAFC]"
                 />
               </div>
-              </div>
-            </section>
-
-            <section className="space-y-4 border-t border-[#334155] pt-6">
-              <div>
-                <h3 className="text-base font-semibold text-[#F8FAFC]">Registration and address</h3>
-                <p className="mt-1 text-xs text-[#94A3B8]">Tax identifiers and the company’s registered office.</p>
-              </div>
-              <div className="grid gap-x-5 gap-y-4 md:grid-cols-2 xl:grid-cols-3">
-              <div className="company-field-group">
-                <label className="company-field-label">GSTIN</label>
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-bold text-[#94A3B8] uppercase">GSTIN Registration</label>
                 <input
                   type="text"
                   value={gstNo}
                   onChange={(e) => setGstNo(e.target.value)}
-                  className="company-field"
+                  className="w-full bg-[#1E293B] border border-[#334155] rounded-lg px-3 py-2 text-xs text-[#F8FAFC]"
                 />
               </div>
-              <div className="company-field-group">
-                <label className="company-field-label">PAN</label>
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-bold text-[#94A3B8] uppercase">PAN Number</label>
                 <input
                   type="text"
                   value={panNo}
                   onChange={(e) => setPanNo(e.target.value)}
-                  className="company-field"
+                  className="w-full bg-[#1E293B] border border-[#334155] rounded-lg px-3 py-2 text-xs text-[#F8FAFC]"
                 />
               </div>
-              <div className="company-field-group md:col-span-2 xl:col-span-3">
-                <label className="company-field-label">Registered office address</label>
+              <div className="space-y-1.5 md:col-span-2">
+                <label className="text-[11px] font-bold text-[#94A3B8] uppercase">Corporate Address</label>
                 <input
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  className="company-field"
+                  className="w-full bg-[#1E293B] border border-[#334155] rounded-lg px-3 py-2 text-xs text-[#F8FAFC]"
                 />
               </div>
-              </div>
-            </section>
-
+            </div>
           </div>
         )}
 
