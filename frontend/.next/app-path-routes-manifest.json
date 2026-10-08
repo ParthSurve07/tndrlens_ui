@@ -1,0 +1,14 @@
+{
+  "/(auth)/login/page": "/login",
+  "/(auth)/page": "/",
+  "/(auth)/register/page": "/register",
+  "/(dashboard)/analytics/page": "/analytics",
+  "/(dashboard)/company/page": "/company",
+  "/(dashboard)/dashboard/page": "/dashboard",
+  "/(dashboard)/settings/page": "/settings",
+  "/(dashboard)/team/page": "/team",
+  "/(dashboard)/tenders/[id]/page": "/tenders/[id]",
+  "/(dashboard)/tenders/page": "/tenders",
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found"
+}

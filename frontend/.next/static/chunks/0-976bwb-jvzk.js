@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,33602,e=>{"use strict";var t=e.i(17962),o=e.i(4298),r=e.i(84756);e.s(["default",0,function(){let e=(0,o.useRouter)();return(0,t.jsx)(r.f,{onSelectTender:t=>{e.push(`/tenders/${t}`)},forceSubTab:"dashboard"})}])}]);
